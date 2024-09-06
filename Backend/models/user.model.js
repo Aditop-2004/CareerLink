@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    phonenumber: {
+    phoneNumber: {
       type: Number,
       required: true,
       unique: true,
@@ -40,6 +40,6 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
   // These fields are timestamps that represent when the document was created and last updated.
 
-//By setting { timestamps: true }, you're telling Mongoose to automatically manage these timestamp fields for you, so you don't need to add them manually to the schema.
+  //By setting { timestamps: true }, you're telling Mongoose to automatically manage these timestamp fields for you, so you don't need to add them manually to the schema.
 );
 export const User = mongoose.model("User", userSchema);
