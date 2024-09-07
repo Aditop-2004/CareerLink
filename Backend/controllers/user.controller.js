@@ -6,15 +6,17 @@ import bcrypt from "bcryptjs";
 export const register = async (req, res) => {
   try {
     //if user does not enter anything in some of the fields
-    const { fullname, email, phoneNumber, password, role } = req.body;
+    const { fullname, email, phonenumber, password, role } = req.body;
     console.log(req.body);
-    if (!fullname || !email || !phoneNumber || !password || !role) {
+    if (!fullname || !email || !phonenumber || !password || !role) {
       return res.status(400).json({
         message: "Somthing is missing",
         success: false,
       });
     }
     const user = await User.findOne({ email });
+    console.log(user);
+
     //if user with this name already exists as a registered user
     if (user) {
       return res.status(400).json({
@@ -29,7 +31,7 @@ export const register = async (req, res) => {
     await User.create({
       fullname,
       email,
-      phoneNumber,
+      phonenumber,
       password: hashedPassword,
       role,
     });
@@ -40,6 +42,10 @@ export const register = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    return res.status(400).json({
+      message: "kuch to garbad hai daya",
+      success: false,
+    });
   }
 };
 
@@ -83,7 +89,7 @@ export const login = async (req, res) => {
       _id: user._id,
       fullname: user.fullname,
       email: user.email,
-      phoneNumber: user.phoneNumber,
+      phonenumber: user.phonenumber,
       profile: user.profile,
     };
 
@@ -100,6 +106,10 @@ export const login = async (req, res) => {
       });
   } catch (error) {
     console.log(error);
+    return res.status(400).json({
+      message: "kuch to garbad hai daya",
+      success: false,
+    });
   }
 };
 
@@ -111,12 +121,16 @@ export const logout = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    return res.status(400).json({
+      message: "kuch to garbad hai daya",
+      success: false,
+    });
   }
 };
 
 export const UpdateProfile = async (req, res) => {
   try {
-    const { fullname, email, phoneNumber, bio, skills } = req.body;
+    const { fullname, email, phonenumber, bio, skills } = req.body;
 
     //!cloudinary wala code idhar aayega
     if (skills) var skillsArray = skills.split(",");
@@ -133,7 +147,7 @@ export const UpdateProfile = async (req, res) => {
     //updating the data
     if (fullname) user.fullname = fullname;
     if (email) user.email = email;
-    if (phoneNumber) user.phoneNumber = phoneNumber;
+    if (phonenumber) user.phonenumber = phonenumber;
     if (bio) user.profile.bio = bio;
     if (skillsArray) user.profile.skills = skillsArray;
 
@@ -145,7 +159,7 @@ export const UpdateProfile = async (req, res) => {
       _id: user._id,
       fullname: user.fullname,
       email: user.email,
-      phoneNumber: user.phoneNumber,
+      phonenumber: user.phonenumber,
       role: user.role,
       profile: user.profile,
     };
@@ -156,5 +170,9 @@ export const UpdateProfile = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    return res.status(400).json({
+      message: "kuch to garbad hai daya",
+      success: false,
+    });
   }
 };

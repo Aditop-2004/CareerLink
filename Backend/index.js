@@ -6,6 +6,8 @@ import cookieParser from "cookie-parser";
 const app = express();
 
 import userRoute from "./routes/user.route.js";
+import companyRoute from "./routes/company.route.js";
+import jobRoute from "./routes/job.route.js";
 
 //for cross origin and running both backend and frontend parallely on different ports
 import cors from "cors";
@@ -39,6 +41,8 @@ const port = 5000;
 
 //using the apis for different uses (jiske liye route banaye)
 app.use("/api/v1/user", userRoute);
+app.use("/api/v1/company", companyRoute);
+app.use("/api/v1/job", jobRoute);
 
 app.listen(port, () => {
   connectToDatabase();

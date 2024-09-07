@@ -9,19 +9,15 @@ const companySchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      required: true,
     },
     website: {
-      type: Number,
-      required: true,
+      type: String,
     },
     location: {
       type: String,
-      required: true,
     },
     logo: {
       type: String, //URL to company logo
-      required: true,
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId, //userId of the recruiter
