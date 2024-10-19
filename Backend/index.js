@@ -8,6 +8,7 @@ const app = express();
 import userRoute from "./routes/user.route.js";
 import companyRoute from "./routes/company.route.js";
 import jobRoute from "./routes/job.route.js";
+import applicationRoute from "./routes/application.route.js";
 
 //for cross origin and running both backend and frontend parallely on different ports
 import cors from "cors";
@@ -18,6 +19,7 @@ dotenv.config({});
 
 import connectToDatabase from "./utils/db.js";
 
+//These are actually route handlers and
 app.get("/", (req, res) => {
   // return res.status(200).json({
   //    message:"I am coming from backend",
@@ -43,6 +45,8 @@ const port = 5000;
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/company", companyRoute);
 app.use("/api/v1/job", jobRoute);
+app.use("/api/v1/application", applicationRoute);
+//it will be like localhost/api/v1/user/register
 
 app.listen(port, () => {
   connectToDatabase();

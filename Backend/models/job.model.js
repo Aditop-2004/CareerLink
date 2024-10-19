@@ -47,10 +47,12 @@ const jobSchema = new mongoose.Schema(
     applications: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Appliaction",
+        ref: "Application",
       },
     ],
   },
-  { timestamps: true }
+  { timestamps: true } // These fields are timestamps that represent when the document was created and last updated.
+
+  //By setting { timestamps: true }, you're telling Mongoose to automatically manage these timestamp fields for you, so you don't need to add them manually to the schema.
 );
 export const Job = mongoose.model("Job", jobSchema);

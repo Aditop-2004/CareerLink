@@ -10,7 +10,7 @@ export const register = async (req, res) => {
     console.log(req.body);
     if (!fullname || !email || !phonenumber || !password || !role) {
       return res.status(400).json({
-        message: "Somthing is missing",
+        message: "Something is missing",
         success: false,
       });
     }
@@ -24,10 +24,10 @@ export const register = async (req, res) => {
         success: false,
       });
     }
-    //hashing the password with
+    //hashing the password with bcrypt (hashing 10 times)
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    //creating a
+    //creating a new user 
     await User.create({
       fullname,
       email,
@@ -78,13 +78,16 @@ export const login = async (req, res) => {
         success: false,
       });
     }
+    //user is verified (means shi banda hai)
+    //ab hame token banana padega
     const tokenData = {
       userId: user._id,
     };
+    //signing the token data with the secret key
     const token = await jwt.sign(tokenData, process.env.SECRET_KEY, {
       expiresIn: "1d",
     });
-
+    
     user = {
       _id: user._id,
       fullname: user.fullname,
@@ -93,12 +96,13 @@ export const login = async (req, res) => {
       profile: user.profile,
     };
 
+    //to avoid the hacker to get the token 
     return res
       .status(200)
       .cookie("token", token, {
         maxAge: 1 * 24 * 60 * 60 * 1000,
-        httpsOnly: true,
-        sameSite: "strict",
+        httpsOnly: true,//It ensures that the cookie is only accessible through HTTP(S) requests, not by JavaScript.
+        sameSite: "strict",//This enforces a strict same-site policy, meaning the cookie will only be sent if the request originates from the same domain.
       })
       .json({
         message: `Welcome back ${user.fullname}`,

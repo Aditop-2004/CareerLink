@@ -41,8 +41,8 @@ export const registerCompany = async (req, res) => {
 //to get all the companies whose jobs are posted by a recruiter
 export const getCompany = async (req, res) => {
   try {
-    const userId = req.id;
-    const companies = await Company.find({ userId });
+    const userId = req.id;//jo login kiya recruiter uski id (yani jis id se usne request ki thi)
+    const companies = await Company.find({ userId });//aise companies find kro jiski job loginned recruiter ne post ki ho 
     if (!companies) {
       return res.status(404).json({
         message: "Companies not found",
@@ -87,7 +87,7 @@ export const updateCompany = async (req, res) => {
     //!idhar cloudinary aaega
 
     const updateData = { name, description, website, location };
-    //taking the comapny id from the url itself
+    //taking the company id from the url itself
     const company = await Company.findByIdAndUpdate(req.params.id, updateData, {
       new: true,
     });

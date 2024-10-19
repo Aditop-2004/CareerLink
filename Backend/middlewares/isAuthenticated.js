@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
-
+//it is a middleware to check whether the user is loginned or not (to check kar lo ki uska token valid hai ya nhi)
+//har middleware me next() jarur aata hai ek parameter ke taur pe aur use ham hamesha last me jarur lagate hai 
 const isAuthenticated=async(req,res,next)=>{
    try{
       const token=req.cookies.token;
