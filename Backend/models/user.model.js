@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
+      unique: true,
     },
     phonenumber: {
       type: Number,
@@ -26,9 +27,10 @@ const userSchema = new mongoose.Schema(
     profile: {
       bio: { type: String },
       skills: [{ type: String }], //array of strings
-      resume: { type: String },
+      resume: { type: String },//url to resume file
       resumeOriginalName: { type: String },
-      company: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
+      company: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },//this the current company I guess he is working for
+      //just like a foreign key
       profilePhoto: {
         type: String,
         default: "",
@@ -37,7 +39,8 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
   // These fields are timestamps that represent when the document was created and last updated.
-
   //By setting { timestamps: true }, you're telling Mongoose to automatically manage these timestamp fields for you, so you don't need to add them manually to the schema.
 );
 export const User = mongoose.model("User", userSchema);
+
+//ab in schemas ko ham controllers me apis banate samay import krenge

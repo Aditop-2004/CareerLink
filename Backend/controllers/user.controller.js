@@ -53,7 +53,7 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password, role } = req.body;
-    console.log(email, password, role);
+    // console.log(email, password, role);
     if (!email || !password || !role) {
       return res.status(400).json({
         message: "Something is missing",
@@ -75,7 +75,7 @@ export const login = async (req, res) => {
         success: false,
       });
     }
-    console.log(role, user.role);
+    // console.log(role, user.role);
     if (role !== user.role) {
       return res.status(400).json({
         message: "account doesn't exist with the current role.",
@@ -84,6 +84,9 @@ export const login = async (req, res) => {
     }
     //user is verified (means shi banda hai)
     //ab hame token banana padega
+    //yha dekho stateless kaam chal rha hai
+    //yhi token banke client side bhejenge 
+    //ab koi bhi protective route use karte samay request me token bhejenge
     const tokenData = {
       userId: user._id,
     };
@@ -91,7 +94,6 @@ export const login = async (req, res) => {
     const token = await jwt.sign(tokenData, process.env.SECRET_KEY, {
       expiresIn: "1d",
     });
-
     user = {
       _id: user._id,
       fullname: user.fullname,
@@ -99,12 +101,12 @@ export const login = async (req, res) => {
       phonenumber: user.phonenumber,
       profile: user.profile,
     };
-
+    
     //to avoid the hacker to get the token
     return res
       .status(200)
       .cookie("token", token, {
-        maxAge: 1 * 24 * 60 * 60 * 1000,
+        maxAge: 1 * 24 * 60 * 60 * 1000,//1 day validity of the cookie
         httpsOnly: true, //It ensures that the cookie is only accessible through HTTP(S) requests, not by JavaScript.
         sameSite: "strict", //This enforces a strict same-site policy, meaning the cookie will only be sent if the request originates from the same domain.
       })

@@ -1,3 +1,10 @@
+// the dotenv package is commonly used to load these environment variables into process.env, making them accessible throughout your application.
+//isko sabse pehle load krna padta hai
+//Agar .env variables undefined aa rahe hain, to ensure karo ki dotenv ko sabse pehle load kiya ho, .env file me koi space na ho, aur server restart kiya ho.
+import dotenv from "dotenv";
+dotenv.config({});
+
+
 // const express =require("express");
 import express from "express";
 
@@ -13,19 +20,16 @@ import applicationRoute from "./routes/application.route.js";
 //for cross origin and running both backend and frontend parallely on different ports
 import cors from "cors";
 
-// the dotenv package is commonly used to load these environment variables into process.env, making them accessible throughout your application.
-import dotenv from "dotenv";
-dotenv.config({});
 
 import connectToDatabase from "./utils/db.js";
 
 //These are actually route handlers and
 app.get("/", (req, res) => {
-  // return res.status(200).json({
-  //    message:"I am coming from backend",
-  //    success:"true",
-  // })
-  res.send("I am fine");
+  return res.status(200).json({
+    message: "I am coming from backend",
+    success: "true",
+  });
+  // res.sendFile(__dirname + "/index.html");
 });
 
 //middleware
@@ -34,8 +38,6 @@ app.use(express.urlencoded({ extended: true }));
 //express.json() → JSON body handle karta hai
 // express.urlencoded({ extended: true }) → Form-data handle karta hai
 
-
-
 app.use(cookieParser());
 const corsOptions = {
   origin: "http://localhost:5173", //by default in vite raect app
@@ -43,7 +45,7 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 //using the apis for different uses (jiske liye route banaye)
 app.use("/api/v1/user", userRoute);

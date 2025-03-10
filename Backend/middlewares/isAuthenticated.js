@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 //har middleware me next() jarur aata hai ek parameter ke taur pe aur use ham hamesha last me jarur lagate hai 
 const isAuthenticated=async(req,res,next)=>{
    try{
-      const token=req.cookies.token;
+      const token=req.cookies.token;//agar ham cookieparser na use karte to req.cookies ko access nhi kar pate 
       if(!token)
       {
          return res.status(401).json({

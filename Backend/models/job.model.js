@@ -44,7 +44,7 @@ const jobSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    applications: [
+    applications: [//note ki jab ham refernce types wale ka array use krte hai to kaisa syntax use krte hai
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Application",
