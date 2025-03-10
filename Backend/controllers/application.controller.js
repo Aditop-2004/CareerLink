@@ -12,6 +12,7 @@ export const applyJob = async (req, res) => {
         success: false,
       });
     }
+    
     //checking if the user has already applied for the job and thus cannot apply multiple times
     const existingApplication = await Application.findOne({
       job: jobId,

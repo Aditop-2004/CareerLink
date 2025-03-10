@@ -7,7 +7,7 @@ export const register = async (req, res) => {
   try {
     //if user does not enter anything in some of the fields
     const { fullname, email, phonenumber, password, role } = req.body;
-    console.log(req.body);
+    // console.log("hi", req.body);
     if (!fullname || !email || !phonenumber || !password || !role) {
       return res.status(400).json({
         message: "Something is missing",
@@ -15,7 +15,7 @@ export const register = async (req, res) => {
       });
     }
     const user = await User.findOne({ email });
-    console.log(user);
+    // console.log(user);
 
     //if user with this name already exists as a registered user
     if (user) {
@@ -27,7 +27,7 @@ export const register = async (req, res) => {
     //hashing the password with bcrypt (hashing 10 times)
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    //creating a new user 
+    //creating a new user
     await User.create({
       fullname,
       email,
@@ -44,6 +44,7 @@ export const register = async (req, res) => {
     console.log(error);
     return res.status(400).json({
       message: "kuch to garbad hai daya",
+
       success: false,
     });
   }
@@ -52,12 +53,14 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password, role } = req.body;
+    console.log(email, password, role);
     if (!email || !password || !role) {
       return res.status(400).json({
         message: "Something is missing",
         success: false,
       });
     }
+    // console.log("hi");
     let user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({
@@ -72,6 +75,7 @@ export const login = async (req, res) => {
         success: false,
       });
     }
+    console.log(role, user.role);
     if (role !== user.role) {
       return res.status(400).json({
         message: "account doesn't exist with the current role.",
@@ -87,7 +91,7 @@ export const login = async (req, res) => {
     const token = await jwt.sign(tokenData, process.env.SECRET_KEY, {
       expiresIn: "1d",
     });
-    
+
     user = {
       _id: user._id,
       fullname: user.fullname,
@@ -96,13 +100,13 @@ export const login = async (req, res) => {
       profile: user.profile,
     };
 
-    //to avoid the hacker to get the token 
+    //to avoid the hacker to get the token
     return res
       .status(200)
       .cookie("token", token, {
         maxAge: 1 * 24 * 60 * 60 * 1000,
-        httpsOnly: true,//It ensures that the cookie is only accessible through HTTP(S) requests, not by JavaScript.
-        sameSite: "strict",//This enforces a strict same-site policy, meaning the cookie will only be sent if the request originates from the same domain.
+        httpsOnly: true, //It ensures that the cookie is only accessible through HTTP(S) requests, not by JavaScript.
+        sameSite: "strict", //This enforces a strict same-site policy, meaning the cookie will only be sent if the request originates from the same domain.
       })
       .json({
         message: `Welcome back ${user.fullname}`,
@@ -153,10 +157,11 @@ export const UpdateProfile = async (req, res) => {
     if (email) user.email = email;
     if (phonenumber) user.phonenumber = phonenumber;
     if (bio) user.profile.bio = bio;
-    if (skillsArray) user.profile.skills = skillsArray;
+    if (skills) user.profile.skills = skillsArray;
 
     //!uploading the resume part using the cloudinary comes here
 
+    //actually this is what is actually chnaging the data in the database
     await user.save();
 
     user = {

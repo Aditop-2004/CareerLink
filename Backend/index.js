@@ -31,10 +31,14 @@ app.get("/", (req, res) => {
 //middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+//express.json() → JSON body handle karta hai
+// express.urlencoded({ extended: true }) → Form-data handle karta hai
+
+
 
 app.use(cookieParser());
 const corsOptions = {
-  origin: "https//localhost:5173", //by default in vite raect app
+  origin: "http://localhost:5173", //by default in vite raect app
   credentials: true,
 };
 app.use(cors(corsOptions));
