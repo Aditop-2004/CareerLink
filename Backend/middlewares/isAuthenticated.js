@@ -19,7 +19,7 @@ const isAuthenticated=async(req,res,next)=>{
             success:false,
          })
       };
-      req.id=decode.userId;
+      req.id=decode.userId;//this is the id of the user loginned jo ki token ke andar save ki thi at the time of login
       next();
    }
    catch(error)

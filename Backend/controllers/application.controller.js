@@ -119,7 +119,7 @@ export const getApplicants = async (req, res) => {
 };
 
 //updating the status of the application by the recruiter that whether the application has been accepted or rejected
-
+//ye dhyan ham frontend me rakhenge ki recruiter apni hi post ki hui job postings ko accept ya reject kar paye
 export const updateStatus = async (req, res) => {
   try {
     const { status } = req.body;

@@ -7,7 +7,7 @@ export const register = async (req, res) => {
   try {
     //if user does not enter anything in some of the fields
     const { fullname, email, phonenumber, password, role } = req.body;
-    // console.log("hi", req.body);
+    console.log("hi", req.body);
     if (!fullname || !email || !phonenumber || !password || !role) {
       return res.status(400).json({
         message: "Something is missing",
@@ -85,7 +85,7 @@ export const login = async (req, res) => {
     //user is verified (means shi banda hai)
     //ab hame token banana padega
     //yha dekho stateless kaam chal rha hai
-    //yhi token banke client side bhejenge 
+    //yhi token banke client side bhejenge
     //ab koi bhi protective route use karte samay request me token bhejenge
     const tokenData = {
       userId: user._id,
@@ -101,12 +101,12 @@ export const login = async (req, res) => {
       phonenumber: user.phonenumber,
       profile: user.profile,
     };
-    
+
     //to avoid the hacker to get the token
     return res
       .status(200)
       .cookie("token", token, {
-        maxAge: 1 * 24 * 60 * 60 * 1000,//1 day validity of the cookie
+        maxAge: 1 * 24 * 60 * 60 * 1000, //1 day validity of the cookie
         httpsOnly: true, //It ensures that the cookie is only accessible through HTTP(S) requests, not by JavaScript.
         sameSite: "strict", //This enforces a strict same-site policy, meaning the cookie will only be sent if the request originates from the same domain.
       })
@@ -146,7 +146,6 @@ export const UpdateProfile = async (req, res) => {
     if (skills) var skillsArray = skills.split(",");
     const userId = req.id; //from middleware authentication
     let user = await User.findById(userId);
-
     if (!user) {
       return res.status(400).json({
         message: "User not found",
@@ -163,7 +162,7 @@ export const UpdateProfile = async (req, res) => {
 
     //!uploading the resume part using the cloudinary comes here
 
-    //actually this is what is actually chnaging the data in the database
+    //actually this is what is actually changing the data in the database
     await user.save();
 
     user = {

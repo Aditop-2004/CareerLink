@@ -1,5 +1,6 @@
 //schema for company type and info
 import mongoose from "mongoose";
+//Here we are assuming that a recruiter can post the postings of multiple companies but a company can only be posted by one recruiter
 const companySchema = new mongoose.Schema(
   {
     name: {

@@ -88,6 +88,8 @@ export const updateCompany = async (req, res) => {
 
     const updateData = { name, description, website, location };
     //taking the company id from the url itself
+
+    //yha ham find karke fir save function ka use bhi kar sakte the 
     const company = await Company.findByIdAndUpdate(req.params.id, updateData, {
       new: true,
     });

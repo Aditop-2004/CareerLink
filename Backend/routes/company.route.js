@@ -1,8 +1,8 @@
 import express from "express";
-import { login } from "../controllers/user.controller.js";
 const router = express.Router();
 
 import isAuthenticated from "../middlewares/isAuthenticated.js";
+import isRecruiter from "../middlewares/isRecruiter.js";
 import {
   getCompany,
   getCompanyById,
@@ -10,9 +10,9 @@ import {
   updateCompany,
 } from "../controllers/company.controller.js";
 
-router.route("/register").post(isAuthenticated, registerCompany);
-router.route("/get").get(isAuthenticated, getCompany);
-router.route("/get/:id").get(isAuthenticated, getCompanyById);
-router.route("/update/:id").put(isAuthenticated, updateCompany);
+router.route("/register").post(isRecruiter, registerCompany);
+router.route("/get").get(isRecruiter, getCompany);
+router.route("/get/:id").get(isRecruiter, getCompanyById);
+router.route("/update/:id").patch(isRecruiter, updateCompany);
 
 export default router;
