@@ -8,10 +8,11 @@ import {
 const router = express.Router();
 
 import isAuthenticated from "../middlewares/isAuthenticated.js";
-import { singleUpload } from "../middlewares/multer.js";
+// import { singleUpload } from "../middlewares/multer.js";
+import upload from "../middlewares/multer.js";
 
 //yha jaise ham post,put aur get use karnege waise hi ham nodemon me test karte samay bhi rakhege
-router.route("/register").post(singleUpload, register);
+router.route("/register").post(upload.single("file"), register);
 router.route("/login").post(login);
 router.route("/logout").get(logout);
 

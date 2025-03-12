@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
 // Import components as usual
-
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 export default function Navbar() {
-  const [user, setUser] = useState(null); // Mock user state
-
+  // const [user, setUser] = useState(null); // Mock user state
+  const user = false;
   return (
-    <div style={{ backgroundColor: "#e7f2f8" }}>
+    <div className="bg-blue-50">
       <div className="flex items-center justify-between mx-auto max-w-7xl h-16">
         <div>
           <h1 className="text-2xl font-bold mx-5">
@@ -40,7 +41,7 @@ export default function Navbar() {
               ) : (
                 <Popover>
                   <PopoverTrigger asChild>
-                    <Avatar className="pointer-cursor">
+                    <Avatar className="pointer-cursor mr-4">
                       <AvatarImage src="https://github.com/shadcn.png" />
                       <AvatarFallback>X</AvatarFallback>
                     </Avatar>

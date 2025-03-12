@@ -60,10 +60,13 @@ export default function Login() {
       <div>
         <Navbar></Navbar>
       </div>
-      <div className="my-5 bg-no-repeat bg-cover bg-center h-screen">
-        <section className="bg-gray-50 dark:bg-gray-900 pt-16">
+      <div className="my-5 bg-no-repeat bg-cover bg-center h-screen ">
+        <section className="bg-white dark:bg-gray-900 pt-16">
           <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-            <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <div
+              className="w-full rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 bg-blue-50 border-grey-400 border-2"
+              style={{ backgroundColor: "#e7f2f8" }}
+            >
               <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <h1 className="text-3xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                   Login
@@ -163,15 +166,17 @@ export default function Login() {
                   {loading ? (
                     <Loader />
                   ) : (
-                    <Button
-                      type="submit"
-                      variant="ghost"
-                      className="w-full text-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                    >
-                      <span style={{ border: "black", fontSize: "18px" }}>
-                        Login
-                      </span>
-                    </Button>
+                    <div className="flex  justify-center">
+                      <Button
+                        type="submit"
+                        variant="ghost"
+                        className=" text-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                      >
+                        <span style={{ border: "black", fontSize: "18px" }}>
+                          Login
+                        </span>
+                      </Button>
+                    </div>
                   )}
 
                   {/* Login Link */}

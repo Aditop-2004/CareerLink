@@ -2,12 +2,15 @@ import { response } from "express";
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
+import uploadOnCloudinary from "../utils/cloudinary.js";
 //Yha ham wo backend ka routes call me jo function pass karte hai wo define kar rhe
 export const register = async (req, res) => {
   try {
     //if user does not enter anything in some of the fields
+    // console.log(req.body);
+    // console.log(req.file);
     const { fullname, email, phonenumber, password, role } = req.body;
-    console.log("hi", req.body);
+    // console.log("hi", req.body);
     if (!fullname || !email || !phonenumber || !password || !role) {
       return res.status(400).json({
         message: "Something is missing",
@@ -26,7 +29,13 @@ export const register = async (req, res) => {
     }
     //hashing the password with bcrypt (hashing 10 times)
     const hashedPassword = await bcrypt.hash(password, 10);
-
+    let profilePhotoUrl = "";
+    if (req.file) {
+      const response = await uploadOnCloudinary(req.file.path);
+      profilePhotoUrl = response.secure_url;
+      // console.log(profilePhotoUrl);
+    }
+    // console.log(response);
     //creating a new user
     await User.create({
       fullname,
@@ -34,6 +43,12 @@ export const register = async (req, res) => {
       phonenumber,
       password: hashedPassword,
       role,
+      profile: {
+        bio: "",
+        skills: [],
+        resume: "",
+        profilePhoto: profilePhotoUrl,
+      },
     });
 
     return res.status(201).json({

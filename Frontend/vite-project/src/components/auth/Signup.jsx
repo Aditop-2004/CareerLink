@@ -34,10 +34,12 @@ export default function Signup() {
     formData.append("phonenumber", input.phoneNumber);
     formData.append("password", input.password);
     formData.append("role", input.role);
-    console.log(formData);
-    if (input.file) {
-      formData.append("file", input.file);
+    // console.log(formData);
+    if (input.profilePicture) {
+      formData.append("file", input.profilePicture);
     }
+    console.log(formData);
+    //see how to integrate frontend and backend
     try {
       const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
         headers: {
@@ -51,7 +53,7 @@ export default function Signup() {
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.message);
+      // toast.error(error.response.data.message);
     }
   };
   return (
@@ -60,9 +62,9 @@ export default function Signup() {
         <Navbar></Navbar>
       </div>
       <div className="my-20 bg-cover bg-center h-screen">
-        <section className="bg-gray-50 dark:bg-gray-900 pt-16">
+        <section className="bg-white dark:bg-gray-900 pt-16">
           <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-            <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <div className="w-full rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 bg-blue-50 border-grey-400 border-2">
               <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <h1 className="text-3xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                   Create an account
@@ -246,15 +248,17 @@ export default function Signup() {
                   </div>
 
                   {/* Submit Button */}
-                  <Button
-                    type="submit"
-                    variant="ghost"
-                    className="w-full text-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                  >
-                    <span style={{ border: "black", fontSize: "18px" }}>
-                      Create an account
-                    </span>
-                  </Button>
+                  <div className="flex  justify-center">
+                    <Button
+                      type="submit"
+                      variant="ghost"
+                      className=" text-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                    >
+                      <span style={{ border: "black", fontSize: "18px" }}>
+                        Create an account
+                      </span>
+                    </Button>
+                  </div>
 
                   {/* Login Link */}
                   <p className="text-sm font-light text-gray-500 dark:text-gray-400">
