@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "../ui/button";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 // Import components as usual
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
@@ -20,23 +20,59 @@ export default function Navbar() {
             <div className="flex items-center gap-12">
               <span className="flex gap-5 font-bold text-[green]">
                 <li>
-                  <Link to="/">Home</Link>
+                  <NavLink
+                    to="/"
+                    className={({ isActive }) =>
+                      isActive ? "text-red-500" : "text-[green]"
+                    }
+                  >
+                    Home
+                  </NavLink>
                 </li>
                 <li>
-                  <Link to="/jobs">Jobs</Link>
+                  <NavLink
+                    to="/jobs"
+                    className={({ isActive }) =>
+                      isActive ? "text-red-500" : ""
+                    }
+                  >
+                    Jobs
+                  </NavLink>
                 </li>
                 <li>
-                  <Link to="/browse">Browse</Link>
+                  <NavLink
+                    to="/browse"
+                    className={({ isActive }) =>
+                      isActive ? "text-red-500" : ""
+                    }
+                  >
+                    Browse
+                  </NavLink>
                 </li>
               </span>
               {!user ? (
                 <div className="flex gap-5 mx-5">
-                  <Button variant="outline" className="hover:bg-[#c0c0c0]">
-                    <Link to="/login">Login</Link>
-                  </Button>
-                  <Button variant="outline" className="hover:bg-[#c0c0c0]">
-                    <Link to="/signup">Register</Link>
-                  </Button>
+                  <NavLink
+                    to="/login"
+                    className={({ isActive }) =>
+                      isActive ? "text-red-500" : ""
+                    }
+                  >
+                    <Button variant="outline" className="hover:bg-[#c0c0c0]">
+                      Login
+                    </Button>
+                  </NavLink>
+
+                  <NavLink
+                    to="/signup"
+                    className={({ isActive }) =>
+                      isActive ? "text-red-500" : ""
+                    }
+                  >
+                    <Button variant="outline" className="hover:bg-[#c0c0c0]">
+                      Register
+                    </Button>
+                  </NavLink>
                 </div>
               ) : (
                 <Popover>

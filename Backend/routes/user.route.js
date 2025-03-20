@@ -12,6 +12,11 @@ import isAuthenticated from "../middlewares/isAuthenticated.js";
 import upload from "../middlewares/multer.js";
 
 //yha jaise ham post,put aur get use karnege waise hi ham nodemon me test karte samay bhi rakhege
+
+// "file" in upload.single("file") can be replaced with any other name, but it must match the name attribute used in the frontend when sending the file.
+// formData.append("pic", profilePicture);
+// axios.post("/api/register", formData);
+
 router.route("/register").post(upload.single("file"), register);
 router.route("/login").post(login);
 router.route("/logout").get(logout);

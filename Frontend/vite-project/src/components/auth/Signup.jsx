@@ -5,6 +5,9 @@ import { Button } from "../ui/button";
 import { USER_API_END_POINT } from "../../utils/constant";
 import { toast } from "sonner";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "../../redux/authSlice";
+import { Loader, Loader2 } from "lucide-react";
 
 export default function Signup() {
   //setting up useState for the form data
@@ -18,6 +21,10 @@ export default function Signup() {
   });
 
   const navigate = useNavigate();
+  const loading = useSelector((state) => state.auth.loading);
+  const dispatch = useDispatch();
+
+  // The square brackets ([]) around event.target.name are used for computed property names. This means that JavaScript dynamically sets the object key based on the value of event.target.name.
   const changeEventHandler = (event) => {
     setInput({ ...input, [event.target.name]: event.target.value });
   };
@@ -28,6 +35,7 @@ export default function Signup() {
   const submitHandler = async (event) => {
     event.preventDefault();
     // console.log(input);
+    //since we are also taking image as input thus we needed to must use  formdata else we can use application/json
     const formData = new FormData();
     formData.append("fullname", input.name);
     formData.append("email", input.email);
@@ -41,6 +49,7 @@ export default function Signup() {
     console.log(formData);
     //see how to integrate frontend and backend
     try {
+      dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -48,12 +57,15 @@ export default function Signup() {
         withCredentials: true,
       });
       if (res.data.success) {
+        // console.log(res.data);
         navigate("/login");
         toast.success(res.data.message);
       }
     } catch (error) {
       console.log(error);
       // toast.error(error.response.data.message);
+    } finally {
+      dispatch(setLoading(false));
     }
   };
   return (
@@ -248,17 +260,21 @@ export default function Signup() {
                   </div>
 
                   {/* Submit Button */}
-                  <div className="flex  justify-center">
-                    <Button
-                      type="submit"
-                      variant="ghost"
-                      className=" text-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                    >
-                      <span style={{ border: "black", fontSize: "18px" }}>
-                        Create an account
-                      </span>
-                    </Button>
-                  </div>
+                  {loading ? (
+                    <Loader />
+                  ) : (
+                    <div className="flex  justify-center ">
+                      <Button
+                        type="submit"
+                        variant="ghost"
+                        className=" text-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                      >
+                        <span style={{ border: "black", fontSize: "18px" }}>
+                          Create an account
+                        </span>
+                      </Button>
+                    </div>
+                  )}
 
                   {/* Login Link */}
                   <p className="text-sm font-light text-gray-500 dark:text-gray-400">

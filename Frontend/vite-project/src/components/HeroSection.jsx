@@ -16,11 +16,11 @@ export default function HeroSection() {
           Connect Talent with Opportunity.
         </h1>
 
-        <div className="flex w-[40%] shadow-lg border-gray-200 pl-3 rounded-full items-center gap-4 mx-auto">
+        <div className="flex w-[40%] shadow-lg border-gray-200 pl-3 rounded-full items-center gap-4 mx-auto bg-blue-50">
           <input
             type="text"
             placeholder="Find the opprotunities in your dream company"
-            className="outline-none border-none w-full"
+            className="outline-none border-none w-full bg-blue-50"
           ></input>
           <Button className="rounded-r-full bg-[#6A38C2]">
             <Search className="h-5 w-5"></Search>

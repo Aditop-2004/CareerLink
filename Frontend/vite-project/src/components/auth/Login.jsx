@@ -14,7 +14,8 @@ export default function Login() {
     password: "",
     role: "",
   });
-  const loading = useSelector((state) => state.auth);
+  const loading = useSelector((state) => state.auth.loading);
+  // console.log(loading);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const changeEventHandler = (event) => {
@@ -27,6 +28,7 @@ export default function Login() {
       dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
         headers: {
+          //here we need not to take any image as input thus we are simply using application/json
           "Content-Type": "application/json",
         },
         withCredentials: true,

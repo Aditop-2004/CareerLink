@@ -59,7 +59,6 @@ export const register = async (req, res) => {
     console.log(error);
     return res.status(400).json({
       message: "kuch to garbad hai daya",
-
       success: false,
     });
   }

@@ -10,6 +10,7 @@
 //https://www.npmjs.com/package/multer
 //there will be two options either to upload the file on memory or on disk storage
 //but since we are using cloudinary we will be using disk storage
+//ye middleware ko call pehle karna before calling the controller function in the routes file 
 import multer from "multer";
 import path from "path";
 
