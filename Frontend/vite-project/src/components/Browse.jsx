@@ -8,7 +8,7 @@ export default function Browse() {
     <div>
       <Navbar></Navbar>
       <div className="max-w-7xl mx-auto my-10">
-        <h1 className="font-bold text-xl my-10">
+        <h1 className="font-bold text-xl my-10 mx-4">
           Search Results({randomJobs.length})
         </h1>
         <div className="grid grid-cols-3 gap-4">
