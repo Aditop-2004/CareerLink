@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import Navbar from "../shared/navbar";
+import Navbar from "../shared/Navbar";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
 import axios from "axios";
 import { USER_API_END_POINT } from "../../utils/constant";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading } from "../../redux/authSlice";
+import { setLoading, setUser } from "../../redux/authSlice";
 import { Loader } from "lucide-react";
 import Loading from "./Loading";
 export default function Login() {
@@ -36,6 +36,8 @@ export default function Login() {
       });
       console.log(res.data);
       if (res.data.success) {
+        console.log(res.data);
+        dispatch(setUser(res.data.user));
         navigate("/");
         toast.success(res.data.message);
       }

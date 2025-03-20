@@ -4,7 +4,8 @@ import Login from "./components/auth/Login.jsx";
 import Signup from "./components/auth/Signup.jsx";
 import "./index.css";
 import Jobs from "./components/Jobs.jsx";
-import Browse from "./components/browse.jsx";
+import Browse from "./components/Browse.jsx";
+import Profile from "./components/Profile.jsx";
 export default function App() {
   return (
     <>
@@ -16,6 +17,7 @@ export default function App() {
             <Route exact path="/signup" element={<Signup />}></Route>
             <Route exact path="/jobs" element={<Jobs />}></Route>
             <Route exact path="/browse" element={<Browse />}></Route>
+            <Route exact path="/profile" element={<Profile />}></Route>
           </Routes>
         </div>
       </Router>

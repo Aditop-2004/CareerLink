@@ -4,9 +4,11 @@ import { Link, NavLink } from "react-router-dom";
 // Import components as usual
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { useSelector } from "react-redux";
 export default function Navbar() {
   // const [user, setUser] = useState(null); // Mock user state
-  const user = false;
+  const user = useSelector((state) => state.auth.user);
+  console.log(user);
   return (
     <div className="bg-blue-50">
       <div className="flex items-center justify-between mx-auto max-w-7xl h-16">
@@ -96,7 +98,9 @@ export default function Navbar() {
                         style={{ marginLeft: "0px" }}
                         className="flex w-fit items-center gap-2 cursor-pointer"
                       >
-                        <Button variant="link">View Profile</Button>
+                        <Link to={"/profile"}>
+                          <Button variant="link">View Profile</Button>
+                        </Link>
                       </div>
                       <div
                         style={{ marginLeft: "0px" }}
