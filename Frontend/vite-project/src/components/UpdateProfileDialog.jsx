@@ -66,6 +66,7 @@ export default function UpdateProfileDialog({ open, setOpen }) {
     //will call the update profile api here
     //see how to integrate frontend and backend
     try {
+      //Setting withCredentials: true in your Axios API call tells the browser to include cookies and other credentials (like HTTP authentication headers) in the request. This is especially important when your backend uses sessions or cookies for authentication, and you're making cross-origin requests
       const res = await axios.patch(
         `${USER_API_END_POINT}/profile/update`,
         formData,

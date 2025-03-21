@@ -157,7 +157,8 @@ export const UpdateProfile = async (req, res) => {
   try {
     const { fullname, email, phonenumber, bio, skills } = req.body;
     // console.log(req.body);
-    if (skills) var skillsArray = skills.split(",");
+    if (skills) 
+      var skillsArray = skills.split(",");
     const userId = req.id; //from middleware authentication
     let user = await User.findById(userId);
     if (!user) {
@@ -166,14 +167,14 @@ export const UpdateProfile = async (req, res) => {
         success: false,
       });
     }
-
+    console.log("hel");
     //updating the data
     if (fullname) user.fullname = fullname;
     if (email) user.email = email;
     if (phonenumber) user.phonenumber = phonenumber;
     if (bio) user.profile.bio = bio;
     if (skills) user.profile.skills = skillsArray;
-
+    console.log("hel");
     //!abhi resume nhi upload ho paa rha
     if (req.file) {
       const response = await uploadOnCloudinary(req.file.path, {
@@ -183,7 +184,7 @@ export const UpdateProfile = async (req, res) => {
       user.profile.resume = resumeURL;
     }
     // console.log(user);
-
+    console.log("hel");
     //actually this is what is actually changing the data in the database
     await user.save();
 

@@ -52,9 +52,12 @@ export default function Navbar() {
                 <li>
                   <NavLink
                     to="/jobs"
-                    className={({ isActive }) =>
-                      isActive ? "text-red-500" : ""
+                    className={({ isActive }) => `${
+                      user
+                        ? "cursor-pointer"
+                        : "pointer-events-none cursor-not-allowed"
                     }
+                    ${isActive ? "text-red-500" : ""}`}
                   >
                     Jobs
                   </NavLink>
@@ -62,9 +65,12 @@ export default function Navbar() {
                 <li>
                   <NavLink
                     to="/browse"
-                    className={({ isActive }) =>
-                      isActive ? "text-red-500" : ""
+                    className={({ isActive }) => `${
+                      user
+                        ? "cursor-pointer"
+                        : "pointer-events-none cursor-not-allowed"
                     }
+                    ${isActive ? "text-red-500" : ""}`}
                   >
                     Browse
                   </NavLink>

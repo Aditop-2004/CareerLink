@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-export const authSlice = createSlice({
+const authSlice = createSlice({
   name: "auth",
   initialState: {
     loading: false, //for giving a feel of loading while login and signup
