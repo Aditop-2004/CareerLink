@@ -156,8 +156,7 @@ export const logout = async (req, res) => {
 export const UpdateProfile = async (req, res) => {
   try {
     const { fullname, email, phonenumber, bio, skills } = req.body;
-
-    //!cloudinary wala code idhar aayega
+    // console.log(req.body);
     if (skills) var skillsArray = skills.split(",");
     const userId = req.id; //from middleware authentication
     let user = await User.findById(userId);
@@ -175,7 +174,15 @@ export const UpdateProfile = async (req, res) => {
     if (bio) user.profile.bio = bio;
     if (skills) user.profile.skills = skillsArray;
 
-    //!uploading the resume part using the cloudinary comes here
+    //!abhi resume nhi upload ho paa rha
+    if (req.file) {
+      const response = await uploadOnCloudinary(req.file.path, {
+        resource_type: "raw",
+      });
+      const resumeURL = response.secure_url;
+      user.profile.resume = resumeURL;
+    }
+    // console.log(user);
 
     //actually this is what is actually changing the data in the database
     await user.save();

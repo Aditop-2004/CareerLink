@@ -7,11 +7,17 @@ import { Mail, Pen, Phone } from "lucide-react";
 import { Badge } from "./ui/badge";
 import { Label } from "./ui/label";
 import ApplicationTable from "./ApplicationTable";
+import UpdateProfileDialog from "./UpdateProfileDialog";
 export default function Profile() {
+  const [open, setOpen] = React.useState(false); //for opening the edit profile dialog box
+
   const user = useSelector((state) => state.auth.user);
-  const skills = [];
   console.log(user);
+  console.log(user.profile.skills.length);
+  const skills = [];
+  // console.log(user);
   const isResume = user && user.profile && user.profile.resume ? true : false;
+  const resumeUrl = isResume ? user.profile.resume : "";
   return (
     <div>
       <Navbar />
@@ -19,13 +25,17 @@ export default function Profile() {
         <div className="flex flex-col gap-3 bg-yellow-100 border border-gray-200 rounded-2xl my-5 p-8 ">
           <div className={"flex items-center gap-8 mb-3"}>
             <Avatar className="w-24 h-24">
-              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarImage src={user.profile.profilePhoto} />
             </Avatar>
             <div>
-              <h1>{user.fullname}</h1>
-              <p>Add your bio</p>
+              <h1 className="font-bold text-2xl">{user.fullname}</h1>
+              <p>{user.profile.bio}</p>
             </div>
-            <Button className="text-right" variant="outline">
+            <Button
+              className="text-right"
+              variant="outline"
+              onClick={() => setOpen(true)}
+            >
               <Pen />
             </Button>
           </div>
@@ -61,7 +71,15 @@ export default function Profile() {
         </div>
         <span className="text-3xl underline">Applied Jobs</span>
       </div>
-      <ApplicationTable className=" mx-10"></ApplicationTable>
+      <div className="my-5 rounded-md">
+        <ApplicationTable className=" mx-10 rounded-md"></ApplicationTable>
+      </div>
+      <div>
+        <UpdateProfileDialog
+          open={open}
+          setOpen={setOpen}
+        ></UpdateProfileDialog>
+      </div>
     </div>
   );
 }

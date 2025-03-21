@@ -4,18 +4,36 @@ import { Link, NavLink } from "react-router-dom";
 // Import components as usual
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { USER_API_END_POINT } from "../../utils/constant";
+import { setUser } from "../../redux/authSlice";
 export default function Navbar() {
   // const [user, setUser] = useState(null); // Mock user state
   const user = useSelector((state) => state.auth.user);
-  console.log(user);
+  const dispatch = useDispatch();
+  const handleLogout = async () => {
+    const res = await axios.get(`${USER_API_END_POINT}/logout`, {
+      withCredentials: true,
+    });
+    if (res.data.success) {
+      console.log(res);
+      dispatch(setUser(null));
+      navigate("/");
+    } else {
+      console.log(res);
+    }
+  };
+  // console.log(user);
   return (
     <div className="bg-blue-50">
       <div className="flex items-center justify-between mx-auto max-w-7xl h-16">
         <div>
-          <h1 className="text-2xl font-bold mx-5">
-            Career<span className="text-[#F83002]">Link</span>
-          </h1>
+          <Link to="/">
+            <h1 className="text-2xl font-bold mx-5">
+              Career<span className="text-[#F83002]">Link</span>
+            </h1>
+          </Link>
         </div>
         <div>
           <ul className="flex font-medium items-center gap-5">
@@ -79,18 +97,18 @@ export default function Navbar() {
               ) : (
                 <Popover>
                   <PopoverTrigger asChild>
-                    <Avatar className="pointer-cursor mr-4">
-                      <AvatarImage src="https://github.com/shadcn.png" />
+                    <Avatar className="cursor-pointer mr-4">
+                      <AvatarImage src={user.profile.profilePhoto} />
                       <AvatarFallback>X</AvatarFallback>
                     </Avatar>
                   </PopoverTrigger>
                   <PopoverContent className="w-60">
                     <div>
                       <h4 className="font-medium text-[blue]">
-                        Aditya Chaturvedi
+                        {user.fullname}
                       </h4>
                       <p className="text-sm text-muted-foreground">
-                        A passionate coder
+                        {user.profile.bio}
                       </p>
                     </div>
                     <div>
@@ -106,7 +124,9 @@ export default function Navbar() {
                         style={{ marginLeft: "0px" }}
                         className="flex w-fit items-center gap-2 cursor-pointer"
                       >
-                        <Button variant="link">Logout</Button>
+                        <Button variant="link" onClick={handleLogout}>
+                          Logout
+                        </Button>
                       </div>
                     </div>
                   </PopoverContent>

@@ -6,6 +6,7 @@ import "./index.css";
 import Jobs from "./components/Jobs.jsx";
 import Browse from "./components/Browse.jsx";
 import Profile from "./components/Profile.jsx";
+import JobDescription from "./components/JobDescription.jsx";
 export default function App() {
   return (
     <>
@@ -18,6 +19,11 @@ export default function App() {
             <Route exact path="/jobs" element={<Jobs />}></Route>
             <Route exact path="/browse" element={<Browse />}></Route>
             <Route exact path="/profile" element={<Profile />}></Route>
+            <Route
+              exact
+              path="/description/:id"
+              element={<JobDescription />}
+            ></Route>
           </Routes>
         </div>
       </Router>

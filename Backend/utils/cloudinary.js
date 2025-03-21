@@ -13,6 +13,8 @@ const uploadOnCloudinary = async (filePath) => {
       throw new Error("File path is required");
     }
 
+    // const ext = path.extname(filePath).toLowerCase();
+    // const isPDF = ext === ".pdf";
     // Upload the file
     const response = await cloudinary.uploader.upload(filePath, {
       resource_type: "auto", //auto detects the type of file being uploaded
