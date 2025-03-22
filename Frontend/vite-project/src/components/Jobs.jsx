@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "./shared/Navbar";
 import FilterCard from "./FilterCard";
 import Job from "./Job";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { use } from "react";
 //
-const jobsArray = [1, 2, 3, 4, 5, 6, 7, 8];
+
 export default function Jobs() {
+  const user = useSelector((state) => state.auth.user);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!user) {
+      navigate("/");
+    }
+  }, [user]);
+
   const jobsArray = useSelector((state) => state.job.allJobs);
   return (
     <div>

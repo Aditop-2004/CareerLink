@@ -9,10 +9,17 @@ export default function Job({ job }) {
   const { title, description, salary, location, jobType, position, company } =
     job;
 
+  //to calculate how many days ago the job was posted
+  const date = new Date(job.createdAt);
+  const today = new Date();
+  const timeDiff = Math.abs(today - date);
+  const daysAgo = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
   const navigate = useNavigate();
   return (
     <div className="p-5 rounded-md shadow-xl bg-white border-gray-100 m-3 flex flex-col justify-between">
-      <p className="text-sm text-gray-500">2 days ago</p>
+      <p className="text-sm text-gray-500">
+        {daysAgo == 0 ? "Today" : `${daysAgo} days ago`}
+      </p>
       <div className="flex items-center gap-3">
         <Button variant="outline" className="rounded-full" size="icon">
           <Bookmark></Bookmark>
