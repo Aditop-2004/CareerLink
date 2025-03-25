@@ -9,10 +9,13 @@ import {
   registerCompany,
   updateCompany,
 } from "../controllers/company.controller.js";
+import upload from "../middlewares/multer.js";
 
 router.route("/register").post(isRecruiter, registerCompany);
 router.route("/get").get(isRecruiter, getCompany);
 router.route("/get/:id").get(isRecruiter, getCompanyById);
-router.route("/update/:id").patch(isRecruiter, updateCompany);
+router
+  .route("/update/:id")
+  .patch(isRecruiter, upload.single("logo"), updateCompany);
 
 export default router;

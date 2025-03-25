@@ -1,5 +1,5 @@
 import { Company } from "../models/company.model.js";
-
+import uploadOnCloudinary from "../utils/cloudinary.js";
 //to register a new company by a recruiter
 export const registerCompany = async (req, res) => {
   try {
@@ -41,8 +41,8 @@ export const registerCompany = async (req, res) => {
 //to get all the companies whose jobs are posted by a recruiter
 export const getCompany = async (req, res) => {
   try {
-    const userId = req.id;//jo login kiya recruiter uski id (yani jis id se usne request ki thi)
-    const companies = await Company.find({ userId });//aise companies find kro jiski job loginned recruiter ne post ki ho 
+    const userId = req.id; //jo login kiya recruiter uski id (yani jis id se usne request ki thi)
+    const companies = await Company.find({ userId }); //aise companies find kro jiski job loginned recruiter ne post ki ho
     if (!companies) {
       return res.status(404).json({
         message: "Companies not found",
@@ -83,13 +83,16 @@ export const updateCompany = async (req, res) => {
   try {
     const { name, description, website, location } = req.body;
     const file = req.file;
+    let logo = "";
+    if (file) {
+      const response = await uploadOnCloudinary(file.path);
+      logo = response.secure_url;
+    }
 
-    //!idhar cloudinary aaega
-
-    const updateData = { name, description, website, location };
+    const updateData = { name, description, website, location, logo };
     //taking the company id from the url itself
 
-    //yha ham find karke fir save function ka use bhi kar sakte the 
+    //yha ham find karke fir save function ka use bhi kar sakte the
     const company = await Company.findByIdAndUpdate(req.params.id, updateData, {
       new: true,
     });
@@ -100,6 +103,7 @@ export const updateCompany = async (req, res) => {
       });
     }
     return res.status(200).json({
+      company,
       message: "Company information updated.",
       success: true,
     });

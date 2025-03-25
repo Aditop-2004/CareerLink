@@ -4,7 +4,7 @@ import { setAllJobs } from "../../redux/jobSlice";
 import axios from "axios";
 import { JOB_API_END_POINT } from "../../utils/constant";
 
-export default function getAllJobs() {
+export default function usegetAllJobs() {
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchAllJobs = async () => {
@@ -12,7 +12,7 @@ export default function getAllJobs() {
         const res = await axios.get(`${JOB_API_END_POINT}/get`, {
           withCredentials: true,
         });
-        dispatch(setAllJobs(res.data.jobs));
+        dispatch(res.data.jobs);
         console.log(res);
       } catch (error) {
         console.log(error);

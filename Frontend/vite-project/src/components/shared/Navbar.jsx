@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "../ui/button";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 // Import components as usual
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
@@ -11,17 +11,19 @@ import { setUser } from "../../redux/authSlice";
 export default function Navbar() {
   // const [user, setUser] = useState(null); // Mock user state
   const user = useSelector((state) => state.auth.user);
+  const navigate = useNavigate();
+  // console.log(user);
   const dispatch = useDispatch();
   const handleLogout = async () => {
     const res = await axios.get(`${USER_API_END_POINT}/logout`, {
       withCredentials: true,
     });
     if (res.data.success) {
-      console.log(res);
+      // console.log(res);
       dispatch(setUser(null));
       navigate("/");
     } else {
-      console.log(res);
+      // console.log(res);
     }
   };
   // console.log(user);
@@ -49,32 +51,66 @@ export default function Navbar() {
                     Home
                   </NavLink>
                 </li>
-                <li>
-                  <NavLink
-                    to="/jobs"
-                    className={({ isActive }) => `${
-                      user
-                        ? "cursor-pointer"
-                        : "pointer-events-none cursor-not-allowed"
-                    }
+                {user && user.role === "Student" && (
+                  <li>
+                    <NavLink
+                      to="/jobs"
+                      className={({ isActive }) => `${
+                        user
+                          ? "cursor-pointer"
+                          : "pointer-events-none cursor-not-allowed"
+                      }
                     ${isActive ? "text-red-500" : ""}`}
-                  >
-                    Jobs
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to="/browse"
-                    className={({ isActive }) => `${
-                      user
-                        ? "cursor-pointer"
-                        : "pointer-events-none cursor-not-allowed"
-                    }
+                    >
+                      Jobs
+                    </NavLink>
+                  </li>
+                )}
+                {user && user.role === "Student" && (
+                  <li>
+                    <NavLink
+                      to="/browse"
+                      className={({ isActive }) => `${
+                        user
+                          ? "cursor-pointer"
+                          : "pointer-events-none cursor-not-allowed"
+                      }
                     ${isActive ? "text-red-500" : ""}`}
-                  >
-                    Browse
-                  </NavLink>
-                </li>
+                    >
+                      Browse
+                    </NavLink>
+                  </li>
+                )}
+                {user && user.role === "Recruiter" && (
+                  <li>
+                    <NavLink
+                      to="/admin/companies"
+                      className={({ isActive }) => `${
+                        user
+                          ? "cursor-pointer"
+                          : "pointer-events-none cursor-not-allowed"
+                      }
+                    ${isActive ? "text-red-500" : ""}`}
+                    >
+                      Companies
+                    </NavLink>
+                  </li>
+                )}
+                {user && user.role === "Recruiter" && (
+                  <li>
+                    <NavLink
+                      to="/admin/jobs"
+                      className={({ isActive }) => `${
+                        user
+                          ? "cursor-pointer"
+                          : "pointer-events-none cursor-not-allowed"
+                      }
+                    ${isActive ? "text-red-500" : ""}`}
+                    >
+                      Jobs
+                    </NavLink>
+                  </li>
+                )}
               </span>
               {!user ? (
                 <div className="flex gap-5 mx-5">
@@ -118,19 +154,22 @@ export default function Navbar() {
                       </p>
                     </div>
                     <div>
-                      <div
-                        style={{ marginLeft: "0px" }}
-                        className="flex w-fit items-center gap-2 cursor-pointer"
-                      >
-                        <Link to={"/profile"}>
-                          <Button variant="link">View Profile</Button>
-                        </Link>
-                      </div>
-                      <div
-                        style={{ marginLeft: "0px" }}
-                        className="flex w-fit items-center gap-2 cursor-pointer"
-                      >
-                        <Button variant="link" onClick={handleLogout}>
+                      {user && user.role === "Student" && (
+                        <div
+                          style={{ marginLeft: "0px" }}
+                          className="flex w-fit items-center gap-2 cursor-pointer"
+                        >
+                          <Link to={"/profile"}>
+                            <Button variant="link">View Profile</Button>
+                          </Link>
+                        </div>
+                      )}
+                      <div className="flex gap-2 cursor-pointer p-1">
+                        <Button
+                          variant="link"
+                          onClick={handleLogout}
+                          className="p-1 pt-0"
+                        >
                           Logout
                         </Button>
                       </div>

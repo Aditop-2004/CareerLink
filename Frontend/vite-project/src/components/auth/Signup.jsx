@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Navbar from "../shared/navbar";
+import Navbar from "../shared/Navbar";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 import { USER_API_END_POINT } from "../../utils/constant";

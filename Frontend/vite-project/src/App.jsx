@@ -7,6 +7,9 @@ import Jobs from "./components/Jobs.jsx";
 import Browse from "./components/Browse.jsx";
 import Profile from "./components/Profile.jsx";
 import JobDescription from "./components/JobDescription.jsx";
+import Companies from "./components/admin/Companies.jsx";
+import CompaniesCreate from "./components/admin/CompaniesCreate.jsx";
+import CompanySetup from "./components/admin/CompanySetup.jsx";
 export default function App() {
   return (
     <>
@@ -21,8 +24,23 @@ export default function App() {
             <Route exact path="/profile" element={<Profile />}></Route>
             <Route
               exact
+              path="/admin/companies"
+              element={<Companies />}
+            ></Route>
+            <Route
+              exact
               path="/description/:id"
               element={<JobDescription />}
+            ></Route>
+            <Route
+              exact
+              path="/admin/companies/create"
+              element={<CompaniesCreate />}
+            ></Route>
+            <Route
+              exact
+              path="/admin/companies/:id"
+              element={<CompanySetup />}
             ></Route>
           </Routes>
         </div>

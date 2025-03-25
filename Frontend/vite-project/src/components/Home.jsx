@@ -4,10 +4,10 @@ import HeroSection from "./HeroSection";
 import CategoryCarousel from "./CategoryCarousel";
 import LatestJobs from "./LatestJobs";
 import Footer from "./shared/Footer";
-import getAllJobs from "./customhooks/getAllJobs";
+import usegetAllJobs from "./customhooks/usegetAllJobs";
 
 export default function Home() {
-  getAllJobs();
+  usegetAllJobs();
   return (
     <div>
       <Navbar></Navbar>
