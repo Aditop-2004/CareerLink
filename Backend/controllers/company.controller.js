@@ -2,7 +2,7 @@ import { Company } from "../models/company.model.js";
 import uploadOnCloudinary from "../utils/cloudinary.js";
 //to register a new company by a recruiter
 export const registerCompany = async (req, res) => {
-  try {
+  try{
     const { companyName, description, location, website } = req.body;
     if (!companyName) {
       return res.status(400).json({
