@@ -12,7 +12,7 @@ import { setSingleCompany } from "../../redux/companySlice";
 import axios from "axios";
 import usegetSingleCompanyById from "../customhooks/usegetSingleCompanyById";
 
-export default function CompanySetup() {
+export default function JobSetup() {
   const params = useParams();
 
   usegetSingleCompanyById(params.id);
@@ -96,72 +96,70 @@ export default function CompanySetup() {
               </Button>
             </div>
           </Link>
-          <div className="p-8 border-blue-200 shadow-lg rounded-md">
-            <h1 className="font-bold text-xl">Company Setup</h1>
-            <div className="flex flex-col gap-4 p-8">
-              <div className="flex gap-4">
-                <div>
-                  <Label>Name</Label>
-                </div>
-                <Input
-                  type="text"
-                  name="name"
-                  value={input.name}
-                  onChange={changeEventHandler}
-                />
+          <h1 className="font-bold text-xl">Company Setup</h1>
+          <div className="flex flex-col gap-4 p-8">
+            <div className="flex gap-4">
+              <div>
+                <Label>Name</Label>
               </div>
-              <div className="flex gap-4">
-                <div>
-                  <Label>Description</Label>
-                </div>
-                <Input
-                  type="text"
-                  name="description"
-                  value={input.description}
-                  onChange={changeEventHandler}
-                />
-              </div>
-              <div className="flex gap-4">
-                <div>
-                  <Label>Website</Label>
-                </div>
-
-                <Input
-                  type="text"
-                  name="website"
-                  value={input.website}
-                  onChange={changeEventHandler}
-                />
-              </div>
-              <div className="flex gap-4">
-                <div>
-                  <Label>Location</Label>
-                </div>
-
-                <Input
-                  type="text"
-                  name="location"
-                  value={input.location}
-                  onChange={changeEventHandler}
-                />
-              </div>
-              <div className="flex gap-4">
-                <div>
-                  <Label>Logo</Label>
-                </div>
-
-                <Input
-                  type="file"
-                  name="logo"
-                  accept="image/*"
-                  onChange={changeFileHandler}
-                />
-              </div>
+              <Input
+                type="text"
+                name="name"
+                value={input.name}
+                onChange={changeEventHandler}
+              />
             </div>
-            <Button type="submit" className="w-full mt-8">
-              Save
-            </Button>
+            <div className="flex gap-4">
+              <div>
+                <Label>Description</Label>
+              </div>
+              <Input
+                type="text"
+                name="description"
+                value={input.description}
+                onChange={changeEventHandler}
+              />
+            </div>
+            <div className="flex gap-4">
+              <div>
+                <Label>Website</Label>
+              </div>
+
+              <Input
+                type="text"
+                name="website"
+                value={input.website}
+                onChange={changeEventHandler}
+              />
+            </div>
+            <div className="flex gap-4">
+              <div>
+                <Label>Location</Label>
+              </div>
+
+              <Input
+                type="text"
+                name="location"
+                value={input.location}
+                onChange={changeEventHandler}
+              />
+            </div>
+            <div className="flex gap-4">
+              <div>
+                <Label>Logo</Label>
+              </div>
+
+              <Input
+                type="file"
+                name="logo"
+                accept="image/*"
+                onChange={changeFileHandler}
+              />
+            </div>
           </div>
+          <Button type="submit" className="w-full mt-8">
+            Save
+          </Button>
         </form>
       </div>
     </>

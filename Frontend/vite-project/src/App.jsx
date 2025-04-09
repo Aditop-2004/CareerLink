@@ -10,6 +10,10 @@ import JobDescription from "./components/JobDescription.jsx";
 import Companies from "./components/admin/Companies.jsx";
 import CompaniesCreate from "./components/admin/CompaniesCreate.jsx";
 import CompanySetup from "./components/admin/CompanySetup.jsx";
+import AdminJobs from "./components/admin/AdminJobs.jsx";
+import JobSetup from "./components/admin/JobSetup.jsx";
+import JobsCreate from "./components/admin/JobsCreate.jsx";
+import JobApplicants from "./components/admin/JobApplicants.jsx";
 export default function App() {
   return (
     <>
@@ -41,6 +45,18 @@ export default function App() {
               exact
               path="/admin/companies/:id"
               element={<CompanySetup />}
+            ></Route>
+            <Route exact path="/admin/jobs" element={<AdminJobs />}></Route>
+            <Route exact path="/admin/job/:id" element={<JobSetup />}></Route>
+            <Route
+              exact
+              path="/admin/jobs/create"
+              element={<JobsCreate />}
+            ></Route>
+            <Route
+              exact
+              path="/admin/jobs/applicants/:id"
+              element={<JobApplicants />}
             ></Route>
           </Routes>
         </div>

@@ -12,7 +12,7 @@ export const applyJob = async (req, res) => {
         success: false,
       });
     }
-    
+
     //checking if the user has already applied for the job and thus cannot apply multiple times
     const existingApplication = await Application.findOne({
       job: jobId,
@@ -46,7 +46,7 @@ export const applyJob = async (req, res) => {
     console.log("jobs ", job);
     return res.status(201).json({
       message: "Job applied successfully",
-      
+
       success: true,
     });
   } catch (error) {
@@ -110,8 +110,9 @@ export const getApplicants = async (req, res) => {
         success: false,
       });
     }
+    const applications = job.applications;
     return res.status(200).json({
-      job,
+      applications,
       success: true,
     });
   } catch (error) {
