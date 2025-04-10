@@ -17,7 +17,7 @@ export default function usegetAllJobs() {
           }
         );
         if (res.data.success) dispatch(setAllJobs(res.data.jobs));
-        console.log(res);
+        // console.log(res);
       } catch (error) {
         console.log(error);
       }

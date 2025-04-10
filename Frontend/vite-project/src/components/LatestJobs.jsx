@@ -3,10 +3,12 @@ import LatestJobCard from "./LatestJobCard";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { JOB_API_END_POINT } from "../utils/constant";
+import { useNavigate } from "react-router-dom";
 
 export default function LatestJobs() {
   const [jobsArray, setjobsArray] = useState([]); //used to limit the number of jobs displayed
   //we are already getting the jobs from the backend in the decending order of creation date which is stored in the same way in the redux state and we are using it here
+  // const navigate = useNavigate();
   useEffect(() => {
     const meth = async () => {
       try {
@@ -32,7 +34,11 @@ export default function LatestJobs() {
         {jobsArray
           .slice(0, Math.min(jobsArray.length, 3))
           .map((item, index) => (
-            <LatestJobCard key={index} job={item} />
+            <LatestJobCard
+              key={index}
+              job={item}
+              
+            />
           ))}
       </div>
     </div>

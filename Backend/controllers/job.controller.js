@@ -90,9 +90,10 @@ export const getAllJobs = async (req, res) => {
     ]);
 
     if (!jobs || jobs.length === 0) {
-      return res.status(404).json({
-        message: "Jobs not found",
-        success: false,
+      return res.status(200).json({
+        jobs: [],
+        success: true,
+        message: "No jobs match your search criteria.",
       });
     }
 
