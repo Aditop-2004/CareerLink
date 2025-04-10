@@ -1,6 +1,7 @@
 import { Job } from "../models/job.model.js";
-
+import { Globalskills } from "../models/globalskills.model.js";
 //to post a job by the recruiter
+
 export const postJob = async (req, res) => {
   try {
     const {
@@ -16,6 +17,7 @@ export const postJob = async (req, res) => {
     } = req.body;
     const userId = req.id;
 
+    // Validation
     if (
       !title ||
       !description ||
@@ -32,18 +34,40 @@ export const postJob = async (req, res) => {
         success: false,
       });
     }
+
+    // Normalize requirements
+    const skillArray = requirements
+      .split(",")
+      .map((skill) => skill.trim().toLowerCase())
+      .filter((skill) => skill.length > 0);
+
+    // Create job
     const job = await Job.create({
       title,
       description,
-      requirements: requirements.split(","),
+      requirements: skillArray,
       salary: Number(salary),
       location,
       jobType,
-      experience: experience,
+      experience,
       position,
       company: companyId,
       created_by: userId,
     });
+
+    // Prepare update object for $inc
+    const skillUpdateMap = {};
+    skillArray.forEach((skill) => {
+      skillUpdateMap[`skills.${skill}`] = 1;
+    });
+
+    // Update skill counts
+    await Globalskills.updateOne(
+      { _id: 1 },
+      { $inc: skillUpdateMap },
+      { upsert: true }
+    );
+
     return res.status(200).json({
       message: "New job created successfully",
       job,
