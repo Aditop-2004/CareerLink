@@ -10,6 +10,7 @@ def load_nlp_model():
         return spacy.load('en_core_web_sm')
     except OSError:
         raise RuntimeError("spaCy model 'en_core_web_sm' is missing! Install it using: python -m spacy download en_core_web_sm")
+
 # Main class for resume analysis
 class ResumeAnalyzer:
     def __init__(self):
@@ -21,16 +22,31 @@ class ResumeAnalyzer:
         self.soft_skills = self.load_skills('soft_skills.csv')
         self.courses = self.load_courses('courses.csv')
         
-        # Initialize matchers
+        # Initialize matchers (still available if needed elsewhere)
         self.tech_matcher = self.create_matcher(self.tech_skills)
         self.soft_matcher = self.create_matcher(self.soft_skills)
         
     def load_skills(self, filename):
-        """Load skills from CSV file"""
+        """Load skills from CSV file, with expanded fallback lists if loading fails."""
         try:
             return pd.read_csv(f'data/{filename}')['Skills'].str.lower().tolist()
         except Exception as e:
-            return ["python", "java", "javascript"] if 'tech' in filename else ["communication", "teamwork", "leadership"]
+            # Expanded default lists for more robust matching
+            if 'tech' in filename:
+                return [
+                    "python", "java", "javascript", "c++", "c#", "php", "ruby", "go",
+                    "scala", "swift", "html", "css", "sql", "aws", "azure", "google cloud",
+                    "docker", "kubernetes", "node.js", "react", "angular", "vue.js", "git",
+                    "machine learning", "data science", "tensorflow", "pytorch", "django",
+                    "flask"
+                ]
+            else:
+                return [
+                    "communication", "teamwork", "leadership", "problem solving", 
+                    "adaptability", "critical thinking", "time management", "creativity",
+                    "conflict resolution", "emotional intelligence", "collaboration",
+                    "negotiation", "decision making", "organization"
+                ]
     
     def load_courses(self, filename):
         """Load course recommendations from CSV file"""
@@ -83,26 +99,43 @@ class ResumeAnalyzer:
         return matches[0] if matches else "Phone number not found"
     
     def extract_skills(self, text):
-        """Extract skills from resume text"""
-        doc = self.nlp(text.lower())
+        """
+        Improved extraction of skills using regex for case-insensitive and boundary-aware matching.
+        Returns a dictionary with unique technical and soft skills found in the text.
+        """
+        text_lower = text.lower()
         
-        tech_matches = self.tech_matcher(doc)
-        soft_matches = self.soft_matcher(doc)
+        # Use sets for uniqueness
+        tech_skills_found = set()
+        soft_skills_found = set()
         
-        tech_skills_found = []
-        for match_id, start, end in tech_matches:
-            span = doc[start:end]
-            tech_skills_found.append(span.text)
-            
-        soft_skills_found = []
-        for match_id, start, end in soft_matches:
-            span = doc[start:end]
-            soft_skills_found.append(span.text)
-            
+        # Iterate through technical skills and check using word-boundary regex
+        for skill in self.tech_skills:
+            pattern = r'\b' + re.escape(skill.lower().strip()) + r'\b'
+            if re.search(pattern, text_lower):
+                tech_skills_found.add(skill)
+        
+        # Iterate through soft skills and check similarly
+        for skill in self.soft_skills:
+            pattern = r'\b' + re.escape(skill.lower().strip()) + r'\b'
+            if re.search(pattern, text_lower):
+                soft_skills_found.add(skill)
+        
         return {
-            "technical_skills": list(set(tech_skills_found)),
-            "soft_skills": list(set(soft_skills_found))
+            "technical_skills": list(tech_skills_found),
+            "soft_skills": list(soft_skills_found)
         }
+    
+    def extract_projects_section(self, text):
+        """
+        Extract the projects section from the resume text.
+        This method uses a regex pattern to locate a section titled "Projects".
+        """
+        pattern = re.compile(r"(?i)(projects\s*[:\-]?.*?)(?:$|education|experience|skills)", re.DOTALL)
+        match = pattern.search(text)
+        if match and match.group(1):
+            return match.group(1)
+        return ""
     
     def extract_education(self, text):
         """Extract education information"""
@@ -313,7 +346,19 @@ class ResumeAnalyzer:
         name = self.extract_name(text)
         email = self.extract_email(text)
         phone = self.extract_phone_number(text)
+        
+        # Extract skills from the entire text
         skills_found = self.extract_skills(text)
+        
+        # Also extract skills from the projects section and merge results
+        projects_text = self.extract_projects_section(text)
+        if projects_text:
+            project_skills = self.extract_skills(projects_text)
+            # Merge technical skills
+            skills_found["technical_skills"] = list(set(skills_found["technical_skills"]) | set(project_skills["technical_skills"]))
+            # Merge soft skills
+            skills_found["soft_skills"] = list(set(skills_found["soft_skills"]) | set(project_skills["soft_skills"]))
+        
         education = self.extract_education(text)
         experience = self.extract_experience(text)
         

@@ -124,6 +124,7 @@ export const getApplicants = async (req, res) => {
 //ye dhyan ham frontend me rakhenge ki recruiter apni hi post ki hui job postings ko accept ya reject kar paye
 export const updateStatus = async (req, res) => {
   try {
+    console.log(req.body);
     const { status } = req.body;
     const applicationId = req.params.id;
     if (!status) {

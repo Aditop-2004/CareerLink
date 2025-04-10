@@ -17,9 +17,13 @@ import {
 } from "../ui/select";
 import { useSelector } from "react-redux";
 import { Button } from "../ui/button";
+import { APPLICATION_API_END_POINT } from "../../utils/constant";
+import axios from "axios";
+import { toast } from "sonner";
 
+// http://localhost:5000/api/v1/application/status/67cffe85a55923db2faa0943/update
 export default function ApplicationTable() {
-  const shortlistingStatus = ["Pending", "Selected", "Rejected"];
+  const shortlistingStatus = ["pending", "accepted", "rejected"];
   const applications = useSelector(
     (state) => state.application.jobapplications
   );
@@ -29,6 +33,23 @@ export default function ApplicationTable() {
   };
   console.log(applications[0].applicant.profile.resume);
 
+  const statusHandler = async (status, id) => {
+    try {
+      console.log(status, id);
+      const res = await axios.patch(
+        `${APPLICATION_API_END_POINT}/status/${id}/update`,
+        { status },
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.data.success) {
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   // console.log(typeof applications);
   return (
     <div>
@@ -67,13 +88,21 @@ export default function ApplicationTable() {
               <TableCell>{convertdate(application.createdAt)}</TableCell>
               <div className="flex justify-end">
                 <TableCell className="text-right align-right">
-                  <Select onValueChange={(value) => console.log(value)}>
+                  <Select
+                    onValueChange={(value) =>
+                      statusHandler(value, application._id)
+                    }
+                  >
                     <SelectTrigger className="w-[100px] ">
                       <SelectValue placeholder="Action" />
                     </SelectTrigger>
                     <SelectContent>
                       {shortlistingStatus.map((status, id) => (
-                        <SelectItem key={id} value={status}>
+                        <SelectItem
+                          key={id}
+                          value={status}
+                          className="cursor-pointer"
+                        >
                           {status}
                         </SelectItem>
                       ))}

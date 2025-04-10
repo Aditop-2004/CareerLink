@@ -41,6 +41,7 @@ export default function App() {
               path="/admin/companies/create"
               element={<CompaniesCreate />}
             ></Route>
+            <Route exact path="/browse" element={<Browse />}></Route>
             <Route
               exact
               path="/admin/companies/:id"

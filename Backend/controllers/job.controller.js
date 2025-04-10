@@ -58,36 +58,50 @@ export const postJob = async (req, res) => {
   }
 };
 
-//to get all the jobs for a student
 export const getAllJobs = async (req, res) => {
   try {
-    //ise se search functionality implement hongi
     const keyword = req.query.keyword || "";
-    //for getting the keyword from the url that is used for filtering
-    //ex: ....?keyword="frontend"
-    const query = {
-      $or: [
-        //The conditions are { title: { $regex: keyword, $options: "i" } }, which uses a regular expression to match the title field. The $options: "i" flag makes the search case-insensitive.
-        { title: { $regex: keyword, $options: "i" } },
-        { description: { $regex: keyword, $options: "i" } },
-      ],
-    };
-    const jobs = await Job.find(query)
-      .populate({
-        path: "company",
-      })
-      .sort({ createdAt: -1 });
-    if (!jobs) {
+
+    const jobs = await Job.aggregate([
+      {
+        $lookup: {
+          from: "companies", // Collection name, usually plural and lowercase
+          localField: "company",
+          foreignField: "_id",
+          as: "company",
+        },
+      },
+      {
+        $unwind: "$company", // Turn company from array into object
+      },
+      {
+        $match: {
+          $or: [
+            { title: { $regex: keyword, $options: "i" } },
+            { description: { $regex: keyword, $options: "i" } },
+            { requirements: { $regex: keyword, $options: "i" } },
+            { "company.name": { $regex: keyword, $options: "i" } },
+          ],
+        },
+      },
+      {
+        $sort: { createdAt: -1 },
+      },
+    ]);
+
+    if (!jobs || jobs.length === 0) {
       return res.status(404).json({
         message: "Jobs not found",
         success: false,
       });
     }
+
     return res.status(200).json({
       jobs,
       success: true,
     });
   } catch (err) {
+    console.error("Error in getAllJobs:", err);
     return res.status(400).json({
       message: "kuch to gadbad hai daya",
       success: false,

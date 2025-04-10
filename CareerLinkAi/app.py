@@ -3,7 +3,9 @@ from flask import Flask, jsonify
 from pymongo import MongoClient
 import requests
 from io import BytesIO
+# Import your analyzer functions (adjust the import paths as needed)
 from main import ResumeAnalyzer
+from analysisbygemini import extract_text_from_pdf_bytes, analyze_resume_with_gemini
 
 app = Flask(__name__)
 
@@ -11,7 +13,6 @@ app = Flask(__name__)
 client = MongoClient("mongodb+srv://adityaonstudy:ShsHrmRBSB3J40zU@cluster0.bzjb1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 db = client["test"]
 users_collection = db["users"]
-#print(users_collection)
 
 # Resume Analyzer Object
 analyzer = ResumeAnalyzer()
@@ -20,20 +21,47 @@ analyzer = ResumeAnalyzer()
 def analyze_resume(user_id):
     user = users_collection.find_one({"_id": ObjectId(user_id)})
     if not user or "profile" not in user or "resume" not in user["profile"]:
-       return jsonify({"error": "Resume not found"}), 404
+        return jsonify({"error": "Resume not found"}), 404
 
-    resume_url = user["profile"]["resume"]  # Resume URL extract kiya
+    resume_url = user["profile"]["resume"]  # Extract resume URL from user profile
     print("Resume URL:", resume_url)
-    # Cloudinary se PDF fetch karo
+    # Fetch PDF from Cloudinary
     response = requests.get(resume_url)
     if response.status_code != 200:
         return jsonify({"error": "Failed to fetch resume"}), 500
 
     pdf_file = BytesIO(response.content)
-
-    # ResumeAnalyzer ka use karke analyze karo
+    # Use ResumeAnalyzer to analyze the PDF file
     result = analyzer.analyze_resume(pdf_file, job_role="Software Engineer")
     return jsonify(result)
+
+@app.route("/analyze_resume_api/<user_id>")
+def analyze_resume_api(user_id):
+    user = users_collection.find_one({"_id": ObjectId(user_id)})
+    if not user or "profile" not in user or "resume" not in user["profile"]:
+        return jsonify({"error": "Resume not found"}), 404
+
+    resume_url = user["profile"]["resume"]
+    print("Resume URL:", resume_url)
+
+    try:
+        pdf_response = requests.get(resume_url)
+        if pdf_response.status_code != 200:
+            return jsonify({"error": "Failed to fetch resume"}), 500
+
+        pdf_bytes = pdf_response.content
+        resume_text = extract_text_from_pdf_bytes(pdf_bytes)
+
+        # Optional trimming if the resume text is too long
+        if len(resume_text) > 30000:
+            resume_text = resume_text[:30000]
+
+        result = analyze_resume_with_gemini(resume_text, job_role="Software Engineer")
+        return jsonify(result)
+
+    except Exception as e:
+        print("Unexpected error:", e)
+        return jsonify({"error": "Unexpected error"}), 500
 
 if __name__ == "__main__":
     app.run(debug=True)

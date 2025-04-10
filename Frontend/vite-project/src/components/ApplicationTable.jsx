@@ -9,7 +9,14 @@ import {
   TableHeader,
 } from "./ui/table";
 import { Badge } from "./ui/badge";
+import { useSelector } from "react-redux";
 export default function ApplicationTable() {
+  const allAppliedJobs = useSelector((state) => state.job.allAppliedJobs);
+  const convertdate = (date) => {
+    const newDate = new Date(date);
+    return newDate.toLocaleDateString();
+  };
+  console.log(allAppliedJobs);
   return (
     <div className="max-w-7xl mx-auto mt-8 mr-10 ml-10 bg-blue-50">
       <Table>
@@ -31,13 +38,17 @@ export default function ApplicationTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {[1, 2, 3, 4].map((item, index) => (
+          {allAppliedJobs.map((item, index) => (
             <TableRow key={index}>
-              <TableCell className="text-base">17-05-2023</TableCell>
-              <TableCell className="text-base">Frontend Developer</TableCell>
-              <TableCell className="text-base">Google</TableCell>
+              <TableCell className="text-base">
+                {convertdate(item.createdAt)}
+              </TableCell>
+              <TableCell className="text-base">{item.job.title}</TableCell>
+              <TableCell className="text-base">
+                {item.job.company.name}
+              </TableCell>
               <TableCell className="text-right">
-                <Badge>Selected</Badge>
+                <Badge>{item.status}</Badge>
               </TableCell>
             </TableRow>
           ))}

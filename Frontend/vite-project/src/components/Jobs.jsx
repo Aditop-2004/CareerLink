@@ -4,8 +4,7 @@ import FilterCard from "./FilterCard";
 import Job from "./Job";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { use } from "react";
-//
+
 
 export default function Jobs() {
   const user = useSelector((state) => state.auth.user);
@@ -17,6 +16,7 @@ export default function Jobs() {
   }, [user]);
 
   const jobsArray = useSelector((state) => state.job.allJobs);
+  console.log(jobsArray);
   return (
     <div>
       <Navbar></Navbar>

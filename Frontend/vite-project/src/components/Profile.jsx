@@ -8,12 +8,14 @@ import { Badge } from "./ui/badge";
 import { Label } from "./ui/label";
 import ApplicationTable from "./ApplicationTable";
 import UpdateProfileDialog from "./UpdateProfileDialog";
+import usegetAppliedJobs from "./customhooks/usegetAppliedJobs";
 export default function Profile() {
+  usegetAppliedJobs();
   const [open, setOpen] = React.useState(false); //for opening the edit profile dialog box
 
   const user = useSelector((state) => state.auth.user);
-  console.log(user);
-  console.log(user.profile.skills.length);
+  // console.log(user);
+  // console.log(user.profile.skills.length);
   const skills = [];
   // console.log(user);
   const isResume = user && user.profile && user.profile.resume ? true : false;

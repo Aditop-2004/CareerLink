@@ -6,6 +6,8 @@ import { Badge } from "./ui/badge";
 import { useNavigate } from "react-router-dom";
 
 export default function Job({ job }) {
+  if (!job) return null; 
+  console.log(job);
   const { title, description, salary, location, jobType, position, company } =
     job;
 
