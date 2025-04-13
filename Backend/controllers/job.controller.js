@@ -144,6 +144,7 @@ export const getJobById = async (req, res) => {
       { path: "created_by" },
       { path: "applications" },
     ]);
+    console.log(job);
     //using populate method to also get the company info whose job is posted
     if (!job) {
       return res.status(404).json({

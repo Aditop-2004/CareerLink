@@ -31,7 +31,7 @@ export default function ApplicationTable() {
     const newDate = new Date(date);
     return newDate.toLocaleDateString();
   };
-  console.log(applications[0].applicant.profile.resume);
+ // console.log(applications[0].applicant);
 
   const statusHandler = async (status, id) => {
     try {
@@ -50,7 +50,7 @@ export default function ApplicationTable() {
       console.log(error);
     }
   };
-  // console.log(typeof applications);
+  //console.log(applications[0].matchedSkills);
   return (
     <div>
       <Table>
@@ -62,6 +62,7 @@ export default function ApplicationTable() {
             <TableHead>Contact</TableHead>
             <TableHead>Resume</TableHead>
             <TableHead>Date</TableHead>
+            <TableHead>Matched Skills</TableHead>
             <TableHead className="text-right">Action</TableHead>
           </TableRow>
         </TableHeader>
@@ -86,6 +87,7 @@ export default function ApplicationTable() {
                 )}
               </TableCell>
               <TableCell>{convertdate(application.createdAt)}</TableCell>
+              <TableCell>{application.matchedSkills.join(", ")}</TableCell>
               <div className="flex justify-end">
                 <TableCell className="text-right align-right">
                   <Select

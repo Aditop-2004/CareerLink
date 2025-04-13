@@ -1,5 +1,6 @@
 import { Application } from "../models/application.model.js";
 import { Job } from "../models/job.model.js";
+import axios from "axios";
 
 //for applying to a job
 export const applyJob = async (req, res) => {
@@ -34,9 +35,13 @@ export const applyJob = async (req, res) => {
     }
 
     //creating a new application
+    const data=await axios.get(`http://127.0.0.1:5000/analyze_resume/${userId}`);
+    console.log(data.data.skills.found);
+    const skills = [...data.data.skills.found.soft_skills, ...data.data.skills.found.technical_skills];
     const newApplication = await Application.create({
       job: jobId,
       applicant: userId,
+      skills: skills,
     });
 
     //hamne since job wali schema me ek applications ke ids ki array bhi rakhi as a field to use bhi update krna padega
@@ -58,7 +63,7 @@ export const applyJob = async (req, res) => {
 export const getAppliedJobs = async (req, res) => {
   try {
     const userId = req.id;
-    console.log("cheking");
+    console.log("checking");
     const appliedJobs = await Application.find({ applicant: userId })
       .sort({ createdAt: -1 }) // Close sort function
       .populate({
@@ -83,7 +88,7 @@ export const getAppliedJobs = async (req, res) => {
       appliedJobs,
       success: true,
     });
-  } catch (error) {
+  } catch (error){
     console.log("kuch to gadbad hai daya");
   }
 };
@@ -97,26 +102,41 @@ export const getApplicants = async (req, res) => {
         success: false,
       });
     }
+
     const job = await Job.findById(jobId).populate({
       path: "applications",
-      options: { sort: { createdAt: -1 } },
       populate: {
         path: "applicant",
       },
     });
+
     if (!job) {
       return res.status(401).json({
         message: "no jobs with the provided job id has been posted",
         success: false,
       });
     }
-    const applications = job.applications;
+
+    const requiredSkills = job.requirements || [];
+    //console.log(requiredSkills);
+    const sortedApplications = job.applications
+      .map((application) => {
+        const applicantSkills = application.skills || [];
+        const matchedSkills = applicantSkills.filter(skill =>
+          requiredSkills.includes(skill)
+        );
+        return { ...application._doc,matchedSkills, matchedSkillCount: matchedSkills.length };
+      })
+      .sort((a, b) => b.matchedSkillCount - a.matchedSkillCount);
+    console.log(sortedApplications);
     return res.status(200).json({
-      applications,
+      applications: sortedApplications,
       success: true,
     });
+
   } catch (error) {
     console.log("kuch to gadbad hai daya", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
 
@@ -133,9 +153,8 @@ export const updateStatus = async (req, res) => {
         success: false,
       });
     }
-
     const application = await Application.findOne({ _id: applicationId });
-    if (!application) {
+    if (!application){
       return res.status(400).json({
         message: "Application not found",
         success: false,
