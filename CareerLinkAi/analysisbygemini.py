@@ -1,13 +1,9 @@
-from fastapi import FastAPI, Form
-from fastapi.responses import JSONResponse
 import requests
 from io import BytesIO
 import json
 import PyPDF2
 import google.generativeai as genai
 import re
-
-app = FastAPI()
 
 API_KEY = "AIzaSyClapFFMKbnxwbi5FIPaCqqAcXoDwE1xmc"  # Replace with your actual key
 genai.configure(api_key=API_KEY)
@@ -68,26 +64,3 @@ def analyze_resume_with_gemini(resume_text, job_role):
         return json.loads(match.group(1)) if match else json.loads(response.text)
     except Exception as e:
         return {"error": f"Failed to parse Gemini response: {str(e)}"}
-
-@app.post("/analyze-resume/")
-async def analyze_resume(cloudinary_url: str = Form(...), job_role: str = Form(...)):
-    try:
-        pdf_response = requests.get(cloudinary_url)
-        if pdf_response.status_code != 200:
-            return JSONResponse(content={"error": "Failed to download PDF from provided URL."}, status_code=400)
-
-        pdf_bytes = pdf_response.content
-        resume_text = extract_text_from_pdf_bytes(pdf_bytes)
-
-        if resume_text.startswith("Error"):
-            return JSONResponse(content={"error": resume_text}, status_code=400)
-
-        # Optional trimming
-        if len(resume_text) > 30000:
-            resume_text = resume_text[:30000]
-
-        result = analyze_resume_with_gemini(resume_text, job_role)
-        return JSONResponse(content=result)
-
-    except Exception as e:
-        return JSONResponse(content={"error": f"Unexpected error: {str(e)}"}, status_code=500)

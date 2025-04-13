@@ -17,7 +17,7 @@ export default function AdminJobs() {
   useEffect(() => {
     dispatch(setFilter(input));
   }, [input]);
-  //yha hamne iski state isliye reux me save kri kyunki usko hame companies table me use krenge (although ham prop bhi pass kar sakte the)
+  //yha hamne iski state isliye redux me save kri kyunki usko hame companies table me use krenge (although ham prop bhi pass kar sakte the)
   return (
     <div>
       <Navbar></Navbar>
