@@ -5,7 +5,8 @@ import { APPLICATION_API_END_POINT } from "../../utils/constant";
 import { setJobApplications } from "../../redux/applicationslice";
 
 // http://localhost:5000/api/v1/application/67cff6837b3c067c4f569d1d/applicants
-export default function usegetAllApplicationsForGivenJobId(jobId){
+
+export default function usegetAllApplicationsForGivenJobId(jobId) {
   //   console.log(jobId);
   const dispatch = useDispatch();
   //console.log("hi");
@@ -18,7 +19,6 @@ export default function usegetAllApplicationsForGivenJobId(jobId){
             withCredentials: true,
           }
         );
-        //console.log(res.data.applications);
         dispatch(setJobApplications(res.data.applications));
       } catch (error) {
         console.log(error);

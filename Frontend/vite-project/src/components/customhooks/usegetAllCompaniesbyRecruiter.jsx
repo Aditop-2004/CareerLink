@@ -13,7 +13,7 @@ export default function usegetAllCompaniesbyRecruiter() {
           withCredentials: true,
         });
         dispatch(setCompanies(res.data.companies));
-        console.log(res);
+        // console.log(res);
       } catch (error) {
         console.log(error);
       }

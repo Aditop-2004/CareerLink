@@ -34,7 +34,7 @@ export default function Login() {
         },
         withCredentials: true,
       });
-      console.log(res.data);
+      // console.log(res.data);
       if (res.data.success) {
         console.log(res.data);
         dispatch(setUser(res.data.user));

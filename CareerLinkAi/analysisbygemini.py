@@ -21,7 +21,7 @@ def extract_text_from_pdf_bytes(pdf_bytes):
 def analyze_resume_with_gemini(resume_text, job_role):
     model = genai.GenerativeModel('gemini-2.0-flash')
     prompt = f"""
-    You are a professional resume analyzer. Analyze this resume text for someone targeting a {job_role} role.
+    You are a professional resume analyzer. Analyze this resume text for someone targeting a {job_role} role and give a detailed analysis.
 
     RESUME TEXT:
     {resume_text}
@@ -52,7 +52,7 @@ def analyze_resume_with_gemini(resume_text, job_role):
                 {{"skill": "Skill", "course_name": "Course", "platform": "Platform", "url": "link"}},
                 {{"skill": "Skill", "course_name": "Course", "platform": "Platform", "url": "link"}}
             ],
-            "resume_tips": ["tip1", "tip2"],
+            "resume_tips": ["tip1", "tip2","tip3","tip4"],
             "skills_to_develop": ["skill1", "skill2"]
         }}
     }}

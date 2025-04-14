@@ -48,6 +48,7 @@ export default function AdminJobsTable() {
         <TableCaption>A list of your jobs postings</TableCaption>
         <TableHeader className="bg-yellow-100">
           <TableRow>
+            <TableHead>Logo</TableHead>
             <TableHead>Company Name</TableHead>
             <TableHead>Role</TableHead>
             <TableHead>Date</TableHead>
@@ -65,6 +66,13 @@ export default function AdminJobsTable() {
                     />
                   </Avatar>
                 </TableCell> */}
+                <TableCell>
+                  <Avatar>
+                    <AvatarImage
+                      src={item.company.logo || "https://github.com/shadcn.png"}
+                    />
+                  </Avatar>
+                </TableCell>
                 <TableCell>{item.company.name}</TableCell>
                 <TableCell>{item.title}</TableCell>
                 <TableCell>{datefinder(item.createdAt)}</TableCell>

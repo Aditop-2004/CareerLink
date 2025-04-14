@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  getProfile,
   login,
   logout,
   register,
@@ -8,6 +9,7 @@ import {
 const router = express.Router();
 
 import isAuthenticated from "../middlewares/isAuthenticated.js";
+import isStudent from "../middlewares/isStudent.js";
 // import { singleUpload } from "../middlewares/multer.js";
 import upload from "../middlewares/multer.js";
 
@@ -25,6 +27,7 @@ router.route("/logout").get(logout);
 router
   .route("/profile/update")
   .patch(isAuthenticated, upload.single("file"), UpdateProfile);
+router.route("/getProfile").get(isStudent, getProfile);
 // ye hamne patch use kiya na ki put kyunki patch me ham sirf wo fields bhejte hai jo chnage krni hoti hai aur put me puri body bhejte hai yani sri fields even if that field is not changed
 //thus patch is more efficient in terms of bandwidth.
 export default router;

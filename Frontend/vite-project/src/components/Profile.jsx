@@ -9,11 +9,16 @@ import { Label } from "./ui/label";
 import ApplicationTable from "./ApplicationTable";
 import UpdateProfileDialog from "./UpdateProfileDialog";
 import usegetAppliedJobs from "./customhooks/usegetAppliedJobs";
+import useGetResumeAnalysisUsingUserID from "./customhooks/useGetResumeAnalysisUsingUserID";
+import { Link } from "react-router-dom";
 export default function Profile() {
   usegetAppliedJobs();
   const [open, setOpen] = React.useState(false); //for opening the edit profile dialog box
 
   const user = useSelector((state) => state.auth.user);
+  if (user.role === "Student" && user.profile.resume) {
+    useGetResumeAnalysisUsingUserID(user._id);
+  }
   // console.log(user);
   // console.log(user.profile.skills.length);
   const skills = [];
@@ -63,9 +68,14 @@ export default function Profile() {
           <div className="grid w-full max-w-sm items-center gap-1.5">
             <Label className="text-md font-bold">Resume</Label>
             {isResume ? (
-              <a href={resumeUrl} target="_blank" rel="noreferrer">
-                <Button variant="outline">View Resume</Button>
-              </a>
+              <div className="flex gap-3">
+                <a href={resumeUrl} target="_blank" rel="noreferrer">
+                  <Button variant="outline">View Resume</Button>
+                </a>
+                <Link to="/ResumeAnalysis">
+                  <Button variant="outline">Analyse Resume</Button>
+                </Link>
+              </div>
             ) : (
               <span>No Resume</span>
             )}

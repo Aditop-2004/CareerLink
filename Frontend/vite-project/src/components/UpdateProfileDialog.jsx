@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import { USER_API_END_POINT } from "../utils/constant";
 import { setUser } from "../redux/authSlice";
+import { useNavigate } from "react-router-dom";
 // CareerLink\Frontend\vite-project\src\utils\constant.jsx
 
 export default function UpdateProfileDialog({ open, setOpen }) {
@@ -28,6 +29,7 @@ export default function UpdateProfileDialog({ open, setOpen }) {
     user ? user.profile.skills.join(",") : ""
   );
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [resume, setResume] = useState("");
 
@@ -80,6 +82,7 @@ export default function UpdateProfileDialog({ open, setOpen }) {
       if (res.data.success) {
         setOpen(false);
         dispatch(setUser(res.data.user));
+        navigate("/");
         toast.success(res.data.message);
       }
     } catch (error) {

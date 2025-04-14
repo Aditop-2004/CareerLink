@@ -209,3 +209,24 @@ export const UpdateProfile = async (req, res) => {
     });
   }
 };
+export const getProfile = async (req, res) => {
+  try {
+    const userId = req.id;
+    let user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        success: false,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (e) {
+    return res.status(400).json({
+      message: "kuch to garbad hai daya",
+      success: false,
+    });
+  }
+};

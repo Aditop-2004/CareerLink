@@ -13,7 +13,6 @@ export default function usegetAllJobsbyRecruiter() {
           withCredentials: true,
         });
         dispatch(setAdminJobs(res.data.jobs));
-        //console.log(res.data.jobs);
       } catch (error) {
         console.log(error);
       }

@@ -14,6 +14,7 @@ import AdminJobs from "./components/admin/AdminJobs.jsx";
 import JobSetup from "./components/admin/JobSetup.jsx";
 import JobsCreate from "./components/admin/JobsCreate.jsx";
 import JobApplicants from "./components/admin/JobApplicants.jsx";
+import ResumeAnalysisPage from "./components/ResumeAnalysisPage.jsx";
 export default function App() {
   return (
     <>
@@ -58,6 +59,11 @@ export default function App() {
               exact
               path="/admin/jobs/applicants/:id"
               element={<JobApplicants />}
+            ></Route>
+            <Route
+              exact
+              path="/ResumeAnalysis"
+              element={<ResumeAnalysisPage />}
             ></Route>
           </Routes>
         </div>

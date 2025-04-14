@@ -3,7 +3,6 @@ import LatestJobCard from "./LatestJobCard";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { JOB_API_END_POINT } from "../utils/constant";
-import { useNavigate } from "react-router-dom";
 
 export default function LatestJobs() {
   const [jobsArray, setjobsArray] = useState([]); //used to limit the number of jobs displayed
@@ -16,7 +15,7 @@ export default function LatestJobs() {
           withCredentials: true,
         });
         if (res.data.success) {
-          console.log(res);
+          // console.log(res);
           setjobsArray(res.data.jobs);
         }
       } catch (error) {
@@ -34,11 +33,7 @@ export default function LatestJobs() {
         {jobsArray
           .slice(0, Math.min(jobsArray.length, 3))
           .map((item, index) => (
-            <LatestJobCard
-              key={index}
-              job={item}
-              
-            />
+            <LatestJobCard key={index} job={item} />
           ))}
       </div>
     </div>

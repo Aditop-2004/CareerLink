@@ -16,7 +16,7 @@ export default function ApplicationTable() {
     const newDate = new Date(date);
     return newDate.toLocaleDateString();
   };
-  console.log(allAppliedJobs);
+  // console.log(allAppliedJobs);
   return (
     <div className="max-w-7xl mx-auto mt-8 mr-10 ml-10 bg-blue-50">
       <Table>
