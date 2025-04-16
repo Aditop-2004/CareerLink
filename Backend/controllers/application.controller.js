@@ -119,22 +119,31 @@ export const getApplicants = async (req, res) => {
 
     const requiredSkills = job.requirements || [];
     //console.log(requiredSkills);
-    const sortedApplications = job.applications
-      .map((application) => {
-        const applicantSkills = application.skills || [];
-        const matchedSkills = applicantSkills.filter(skill =>
-          requiredSkills.includes(skill)
-        );
-        return { ...application._doc,matchedSkills, matchedSkillCount: matchedSkills.length };
-      })
-      .sort((a, b) => b.matchedSkillCount - a.matchedSkillCount);
-    console.log(sortedApplications);
+    const applications = job.applications
+  .map((application) => {
+    const applicantSkills = application.skills || [];
+    const matchedSkills = applicantSkills.filter(skill =>
+      requiredSkills.includes(skill)
+    );
+    return {
+      ...application._doc,
+      matchedSkills,
+      matchedSkillCount: matchedSkills.length,
+      createdAt: application.createdAt,
+    };
+  })
+  .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+      // .sort((a, b) => b.matchedSkillCount - a.matchedSkillCount);
+      //console.log(applications);
+      const sortedApplications = [...applications];
+      sortedApplications.sort((a, b) => b.matchedSkillCount - a.matchedSkillCount);
     return res.status(200).json({
-      applications: sortedApplications,
+      applications: [applications, sortedApplications],
       success: true,
     });
 
-  } catch (error) {
+  } catch (error){
     console.log("kuch to gadbad hai daya", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }

@@ -20,19 +20,22 @@ import { Button } from "../ui/button";
 import { APPLICATION_API_END_POINT } from "../../utils/constant";
 import axios from "axios";
 import { toast } from "sonner";
+import { Application } from "./../../../../../Backend/models/application.model";
 
 // http://localhost:5000/api/v1/application/status/67cffe85a55923db2faa0943/update
-export default function ApplicationTable() {
+export default function ApplicationTable({ sort }) {
   const shortlistingStatus = ["pending", "accepted", "rejected"];
-  const applications = useSelector(
+  const allapplications = useSelector(
     (state) => state.application.jobapplications
   );
   const convertdate = (date) => {
     const newDate = new Date(date);
     return newDate.toLocaleDateString();
   };
- // console.log(applications[0].applicant);
-
+  // console.log(applications[0].applicant);
+  //console.log(sort);
+  const applications = sort ? allapplications[1] : allapplications[0];
+  //console.log(applications);
   const statusHandler = async (status, id) => {
     try {
       console.log(status, id);
@@ -52,8 +55,8 @@ export default function ApplicationTable() {
   };
   //console.log(applications[0].matchedSkills);
   return (
-    <div>
-      <Table>
+    <div className="w-full overflow-x-auto">
+      <Table className="min-w-[800px]">
         <TableCaption>A list of applications for job posting </TableCaption>
         <TableHeader>
           <TableRow>
@@ -68,7 +71,7 @@ export default function ApplicationTable() {
         </TableHeader>
         <TableBody>
           {applications.map((application, index) => (
-            <TableRow>
+            <TableRow key={index}>
               <TableCell>{application.applicant.fullname}</TableCell>
               <TableCell>{application.applicant.email}</TableCell>
               <TableCell>{application.applicant.phonenumber}</TableCell>
@@ -87,31 +90,33 @@ export default function ApplicationTable() {
                 )}
               </TableCell>
               <TableCell>{convertdate(application.createdAt)}</TableCell>
-              <TableCell>{application.matchedSkills.join(", ")}</TableCell>
-              <div className="flex justify-end">
-                <TableCell className="text-right align-right">
-                  <Select
-                    onValueChange={(value) =>
-                      statusHandler(value, application._id)
-                    }
-                  >
-                    <SelectTrigger className="w-[100px] ">
-                      <SelectValue placeholder="Action" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {shortlistingStatus.map((status, id) => (
-                        <SelectItem
-                          key={id}
-                          value={status}
-                          className="cursor-pointer"
-                        >
-                          {status}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </TableCell>
-              </div>
+              <TableCell>
+                {application.matchedSkills
+                  ? application.matchedSkills.join(", ")
+                  : "No skills matched"}
+              </TableCell>
+              <TableCell className="text-right">
+                <Select
+                  onValueChange={(value) =>
+                    statusHandler(value, application._id)
+                  }
+                >
+                  <SelectTrigger className="w-[100px]">
+                    <SelectValue placeholder="Action" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {shortlistingStatus.map((status, id) => (
+                      <SelectItem
+                        key={id}
+                        value={status}
+                        className="cursor-pointer"
+                      >
+                        {status}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
